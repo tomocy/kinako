@@ -15,6 +15,7 @@ const (
 	Plus     = "Plus"
 	Minus    = "Minus"
 	Asterisk = "Asterisk"
+	Slash    = "Slash"
 
 	Integer = "Integer"
 )
@@ -23,6 +24,7 @@ var types = map[string]Type{
 	"+": Plus,
 	"-": Minus,
 	"*": Asterisk,
+	"/": Slash,
 }
 
 func LookUpType(s string) Type {
