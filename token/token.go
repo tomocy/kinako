@@ -12,13 +12,15 @@ const (
 
 	EOF = "EOF"
 
-	Plus = "Plus"
+	Plus  = "Plus"
+	Minus = "Minus"
 
 	Integer = "Integer"
 )
 
 var types = map[string]Type{
 	"+": Plus,
+	"-": Minus,
 }
 
 func LookUpType(s string) Type {
