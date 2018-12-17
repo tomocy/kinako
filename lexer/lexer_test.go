@@ -7,9 +7,9 @@ import (
 )
 
 func TestReadNextToken(t *testing.T) {
-	input := "1 + 2 - 3"
+	input := "1 + 2 - 3 * 4"
 	expects := []token.Token{
-		{token.Integer, "1"}, {token.Plus, "+"}, {token.Integer, "2"}, {token.Minus, "-"}, {token.Integer, "3"},
+		{token.Integer, "1"}, {token.Plus, "+"}, {token.Integer, "2"}, {token.Minus, "-"}, {token.Integer, "3"}, {token.Asterisk, "*"}, {token.Integer, "4"},
 		{token.EOF, ""},
 	}
 	lexer := New(input)

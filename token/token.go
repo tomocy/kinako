@@ -12,8 +12,9 @@ const (
 
 	EOF = "EOF"
 
-	Plus  = "Plus"
-	Minus = "Minus"
+	Plus     = "Plus"
+	Minus    = "Minus"
+	Asterisk = "Asterisk"
 
 	Integer = "Integer"
 )
@@ -21,6 +22,7 @@ const (
 var types = map[string]Type{
 	"+": Plus,
 	"-": Minus,
+	"*": Asterisk,
 }
 
 func LookUpType(s string) Type {
