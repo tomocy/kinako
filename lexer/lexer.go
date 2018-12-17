@@ -30,6 +30,8 @@ func (l *Lexer) ReadNextToken() token.Token {
 
 func (l *Lexer) readToken() token.Token {
 	switch l.currentCharacter {
+	case '+':
+		return l.readSingleToken()
 	case 0:
 		return l.readEOF()
 	default:
@@ -38,6 +40,14 @@ func (l *Lexer) readToken() token.Token {
 		}
 
 		return l.readUnknown()
+	}
+}
+
+func (l *Lexer) readSingleToken() token.Token {
+	literal := string(l.currentCharacter)
+	return token.Token{
+		Type:    token.LookUpType(literal),
+		Literal: literal,
 	}
 }
 

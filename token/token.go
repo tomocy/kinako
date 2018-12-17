@@ -12,5 +12,19 @@ const (
 
 	EOF = "EOF"
 
+	Plus = "Plus"
+
 	Integer = "Integer"
 )
+
+var types = map[string]Type{
+	"+": Plus,
+}
+
+func LookUpType(s string) Type {
+	if t, ok := types[s]; ok {
+		return t
+	}
+
+	return Unknown
+}
