@@ -6,7 +6,11 @@ import (
 	"github.com/tomocy/kinako/token"
 )
 
-const whitespaces = " \t\r\n"
+const (
+	whitespaces = " \t\r\n"
+
+	eof = 0
+)
 
 type Lexer struct {
 	input            string
@@ -35,7 +39,7 @@ func (l *Lexer) readToken() token.Token {
 		'(', ')',
 		'=':
 		return l.readSingleToken()
-	case 0:
+	case eof:
 		return l.readEOF()
 	default:
 		if l.hasDigit() {
