@@ -17,10 +17,15 @@ const (
 	Asterisk = "Asterisk"
 	Slash    = "Slash"
 
+	Assign = "Assign"
+
 	LParen = "LParen"
 	RParen = "RParen"
 
+	Ident   = "Ident"
 	Integer = "Integer"
+
+	Var = "var"
 )
 
 var types = map[string]Type{
@@ -30,6 +35,7 @@ var types = map[string]Type{
 	"/": Slash,
 	"(": LParen,
 	")": RParen,
+	"=": Assign,
 }
 
 func LookUpType(s string) Type {
@@ -38,4 +44,16 @@ func LookUpType(s string) Type {
 	}
 
 	return Unknown
+}
+
+var keywords = map[string]Type{
+	"var": Var,
+}
+
+func LookUpKeywordOrIdentifier(s string) Type {
+	if t, ok := keywords[s]; ok {
+		return t
+	}
+
+	return Ident
 }

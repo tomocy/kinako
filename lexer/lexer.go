@@ -32,13 +32,18 @@ func (l *Lexer) readToken() token.Token {
 	switch l.currentCharacter {
 	case
 		'+', '-', '*', '/',
-		'(', ')':
+		'(', ')',
+		'=':
 		return l.readSingleToken()
 	case 0:
 		return l.readEOF()
 	default:
 		if l.hasDigit() {
 			return l.raedInteger()
+		}
+
+		if l.hasLetter() {
+			return l.readKeywordOrIdentifier()
 		}
 
 		return l.readUnknown()
@@ -60,14 +65,6 @@ func (l *Lexer) readEOF() token.Token {
 	}
 }
 
-func (l *Lexer) hasDigit() bool {
-	return isDigit(l.currentCharacter)
-}
-
-func isDigit(r rune) bool {
-	return '0' <= r && r <= '9'
-}
-
 func (l *Lexer) raedInteger() token.Token {
 	return token.Token{
 		Type:    token.Integer,
@@ -84,8 +81,12 @@ func (l *Lexer) readNumber() string {
 	return l.input[begin:l.readingPosition]
 }
 
-func (l *Lexer) willHaveDigit() bool {
-	return isDigit(l.peekCharacter())
+func (l *Lexer) readKeywordOrIdentifier() token.Token {
+	literal := l.readWord()
+	return token.Token{
+		Type:    token.LookUpKeywordOrIdentifier(literal),
+		Literal: literal,
+	}
 }
 
 func (l *Lexer) readUnknown() token.Token {
@@ -97,11 +98,30 @@ func (l *Lexer) readUnknown() token.Token {
 
 func (l *Lexer) readWord() string {
 	begin := l.currentPosition
-	for l.willHaveWhitespace() {
+	for l.willHaveLetter() {
 		l.readCharacter()
 	}
 
 	return l.input[begin:l.readingPosition]
+}
+
+func (l *Lexer) readCharacter() {
+	if len(l.input) <= l.readingPosition {
+		l.currentCharacter = 0
+	} else {
+		l.currentCharacter = rune(l.input[l.readingPosition])
+	}
+
+	l.currentPosition = l.readingPosition
+	l.readingPosition++
+}
+
+func (l *Lexer) peekCharacter() rune {
+	if len(l.input) <= l.readingPosition {
+		return 0
+	}
+
+	return rune(l.input[l.readingPosition])
 }
 
 func (l *Lexer) skipWhitespaces() {
@@ -122,21 +142,30 @@ func isWhitespace(r rune) bool {
 	return strings.ContainsRune(whitespaces, r)
 }
 
-func (l *Lexer) readCharacter() {
-	if len(l.input) <= l.readingPosition {
-		l.currentCharacter = 0
-	} else {
-		l.currentCharacter = rune(l.input[l.readingPosition])
-	}
-
-	l.currentPosition = l.readingPosition
-	l.readingPosition++
+func (l *Lexer) hasLetter() bool {
+	return isLetter(l.currentCharacter)
 }
 
-func (l *Lexer) peekCharacter() rune {
-	if len(l.input) <= l.readingPosition {
-		return 0
-	}
+func (l *Lexer) willHaveLetter() bool {
+	return isLetter(l.peekCharacter())
+}
 
-	return rune(l.input[l.readingPosition])
+func isLetter(r rune) bool {
+	return isAlphabet(r) || isDigit(r)
+}
+
+func (l *Lexer) hasDigit() bool {
+	return isDigit(l.currentCharacter)
+}
+
+func (l *Lexer) willHaveDigit() bool {
+	return isDigit(l.peekCharacter())
+}
+
+func isDigit(r rune) bool {
+	return '0' <= r && r <= '9'
+}
+
+func isAlphabet(r rune) bool {
+	return 'a' <= r && r <= 'z' || 'A' <= r && r <= 'Z'
 }

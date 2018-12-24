@@ -10,6 +10,7 @@ func TestReadNextToken(t *testing.T) {
 	input := `
 	1 + 2 - 3 * 4 / 5
 	((6 + 7) * (8 - 9)) / 10
+	var x int = 10
 	`
 	expects := []token.Token{
 		{token.Integer, "1"}, {token.Plus, "+"}, {token.Integer, "2"}, {token.Minus, "-"}, {token.Integer, "3"}, {token.Asterisk, "*"}, {token.Integer, "4"}, {token.Slash, "/"}, {token.Integer, "5"},
@@ -18,6 +19,7 @@ func TestReadNextToken(t *testing.T) {
 		{token.Asterisk, "*"},
 		{token.LParen, "("}, {token.Integer, "8"}, {token.Minus, "-"}, {token.Integer, "9"}, {token.RParen, ")"},
 		{token.RParen, ")"}, {token.Slash, "/"}, {token.Integer, "10"},
+		{token.Var, "var"}, {token.Ident, "x"}, {token.Ident, "int"}, {token.Assign, "="}, {token.Integer, "10"},
 		{token.EOF, ""},
 	}
 	lexer := New(input)
