@@ -14,8 +14,8 @@ func TestEvaluateInteger(t *testing.T) {
 		Value: 5,
 	}
 	parser := parser.New(lexer.New(input))
-	expr := parser.ParseExpression()
-	evaluator := New(expr)
+	program := parser.ParseProgram()
+	evaluator := New(program)
 	obj := evaluator.Evaluate()
 	integer, ok := obj.(*object.Integer)
 	if !ok {

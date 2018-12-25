@@ -15,7 +15,7 @@ func TestParseExpression(t *testing.T) {
 		Value: 5,
 	}
 	parser := New(lexer.New(input))
-	expr := parser.ParseExpression()
+	expr := parser.parseExpression()
 	integer, ok := expr.(*ast.Integer)
 	if !ok {
 		t.Errorf("unexpected expression: got %T, expected *ast.Integer\n", expr)

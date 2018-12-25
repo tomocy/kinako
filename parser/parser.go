@@ -27,7 +27,11 @@ func (p *Parser) readToken() {
 	p.currentToken = p.lexer.ReadNextToken()
 }
 
-func (p *Parser) ParseExpression() ast.Expression {
+func (p *Parser) ParseProgram() ast.Node {
+	return p.parseExpression()
+}
+
+func (p *Parser) parseExpression() ast.Expression {
 	return p.parserInteger()
 }
 
