@@ -4,6 +4,10 @@ import (
 	"github.com/tomocy/kinako/token"
 )
 
+type Node interface {
+	Expression
+}
+
 type Expression interface {
 	expression()
 }
