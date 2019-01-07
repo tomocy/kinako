@@ -8,20 +8,34 @@ import (
 	"github.com/tomocy/kinako/parser"
 )
 
-func TestEvaluateInteger(t *testing.T) {
-	input := "5"
-	expect := &object.Integer{
-		Value: 5,
+func TestEvaluate(t *testing.T) {
+	tests := []struct {
+		input  string
+		expect object.Object
+	}{
+		{
+			"5",
+			&object.Integer{
+				Value: 5,
+			},
+		},
 	}
-	parser := parser.New(lexer.New(input))
-	program := parser.ParseProgram()
-	evaluator := New(program)
-	obj := evaluator.Evaluate()
-	integer, ok := obj.(*object.Integer)
-	if !ok {
-		t.Errorf("unexpected object: got %T, expected *object.Integer", obj)
+	for _, test := range tests {
+		parser := parser.New(lexer.New(test.input))
+		program := parser.ParseProgram()
+		evaluator := New(program)
+		obj := evaluator.Evaluate()
+		switch obj := obj.(type) {
+		case *object.Integer:
+			testEvaluateIntegerObject(t, obj, test.expect.(*object.Integer))
+		default:
+			t.Fatalf("unexpected type of object: %T\n", obj)
+		}
 	}
-	if integer.Value != expect.Value {
-		t.Errorf("unexpected value: got %d, expected %d\n", integer.Value, expect.Value)
+}
+
+func testEvaluateIntegerObject(t *testing.T, actual, expected *object.Integer) {
+	if actual.Value != expected.Value {
+		t.Errorf("unexpected value: got %d, but expected %d\n", actual.Value, expected.Value)
 	}
 }
