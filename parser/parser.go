@@ -72,7 +72,7 @@ func (p *Parser) parsePrefixExpression() *ast.PrefixExpression {
 func (p *Parser) parseInteger() *ast.Integer {
 	value, err := strconv.ParseInt(p.currentToken.Literal, 10, 64)
 	if err != nil {
-		panic(fmt.Sprintf("faild to parse integer: %s", err))
+		panic(fmt.Sprintf("faild to parse %s to integer: %s", p.currentToken.Literal, err))
 	}
 
 	return &ast.Integer{
