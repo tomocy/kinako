@@ -120,7 +120,7 @@ func (l *Lexer) readCharacter() {
 	l.readingPosition++
 }
 
-func (l *Lexer) peekCharacter() rune {
+func (l Lexer) peekCharacter() rune {
 	if len(l.input) <= l.readingPosition {
 		return 0
 	}
@@ -134,11 +134,11 @@ func (l *Lexer) skipWhitespaces() {
 	}
 }
 
-func (l *Lexer) hasWhitespace() bool {
+func (l Lexer) hasWhitespace() bool {
 	return isWhitespace(l.currentCharacter)
 }
 
-func (l *Lexer) willHaveWhitespace() bool {
+func (l Lexer) willHaveWhitespace() bool {
 	return isWhitespace(l.peekCharacter())
 }
 
@@ -146,11 +146,11 @@ func isWhitespace(r rune) bool {
 	return strings.ContainsRune(whitespaces, r)
 }
 
-func (l *Lexer) hasLetter() bool {
+func (l Lexer) hasLetter() bool {
 	return isLetter(l.currentCharacter)
 }
 
-func (l *Lexer) willHaveLetter() bool {
+func (l Lexer) willHaveLetter() bool {
 	return isLetter(l.peekCharacter())
 }
 
@@ -158,11 +158,11 @@ func isLetter(r rune) bool {
 	return isAlphabet(r) || isDigit(r)
 }
 
-func (l *Lexer) hasDigit() bool {
+func (l Lexer) hasDigit() bool {
 	return isDigit(l.currentCharacter)
 }
 
-func (l *Lexer) willHaveDigit() bool {
+func (l Lexer) willHaveDigit() bool {
 	return isDigit(l.peekCharacter())
 }
 
