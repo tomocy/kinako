@@ -52,7 +52,21 @@ func (p *Parser) parseExpressionStatement() *ast.ExpressionStatement {
 }
 
 func (p *Parser) parseExpression() ast.Expression {
+	if p.has(token.Minus) {
+		return p.parsePrefixExpression()
+	}
+
 	return p.parseInteger()
+}
+
+func (p *Parser) parsePrefixExpression() *ast.PrefixExpression {
+	expr := &ast.PrefixExpression{
+		Operator: ast.Operator(p.currentToken.Literal),
+	}
+	p.readToken()
+	expr.RExpression = p.parseExpression()
+
+	return expr
 }
 
 func (p *Parser) parseInteger() *ast.Integer {

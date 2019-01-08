@@ -4,6 +4,12 @@ import (
 	"github.com/tomocy/kinako/token"
 )
 
+type Operator string
+
+const (
+	Minus Operator = "-"
+)
+
 type Node interface {
 	node()
 }
@@ -33,6 +39,17 @@ func (s ExpressionStatement) statement() {
 type Expression interface {
 	Node
 	expression()
+}
+
+type PrefixExpression struct {
+	Operator    Operator
+	RExpression Expression
+}
+
+func (e PrefixExpression) node() {
+}
+
+func (e PrefixExpression) expression() {
 }
 
 type Integer struct {

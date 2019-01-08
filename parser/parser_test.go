@@ -10,7 +10,10 @@ import (
 )
 
 func TestParseProgram(t *testing.T) {
-	input := "5"
+	input := `
+	5
+	-6
+	`
 	expecteds := []ast.Statement{
 		&ast.ExpressionStatement{
 			Expression: &ast.Integer{
@@ -19,6 +22,18 @@ func TestParseProgram(t *testing.T) {
 					Literal: "5",
 				},
 				Value: 5,
+			},
+		},
+		&ast.ExpressionStatement{
+			Expression: &ast.PrefixExpression{
+				Operator: ast.Minus,
+				RExpression: &ast.Integer{
+					Token: token.Token{
+						Type:    token.Integer,
+						Literal: "6",
+					},
+					Value: 6,
+				},
 			},
 		},
 	}
@@ -41,12 +56,26 @@ func testParseStatement(t *testing.T, actual, expected ast.Statement) {
 }
 
 func testParseExpressionStatement(t *testing.T, actual, expected *ast.ExpressionStatement) {
-	switch actual := actual.Expression.(type) {
+	testParseExpression(t, actual.Expression, expected.Expression)
+}
+
+func testParseExpression(t *testing.T, actual, expected ast.Expression) {
+	switch actual := actual.(type) {
+	case *ast.PrefixExpression:
+		testParsePrefixExpression(t, actual, expected.(*ast.PrefixExpression))
 	case *ast.Integer:
-		testParseInteger(t, actual, expected.Expression.(*ast.Integer))
+		testParseInteger(t, actual, expected.(*ast.Integer))
 	default:
 		t.Fatalf("unexpected type of expression: %T\n", actual)
 	}
+}
+
+func testParsePrefixExpression(t *testing.T, actual, expected *ast.PrefixExpression) {
+	if actual.Operator != expected.Operator {
+		t.Errorf("unexpected operator: got %s, but expected %s\n", actual.Operator, expected.Operator)
+	}
+
+	testParseExpression(t, actual.RExpression, expected.RExpression)
 }
 
 func testParseInteger(t *testing.T, actual, expected *ast.Integer) {
