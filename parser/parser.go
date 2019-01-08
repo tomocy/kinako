@@ -18,7 +18,7 @@ func New(l *lexer.Lexer) *Parser {
 	p := &Parser{
 		lexer: l,
 	}
-	p.readToken()
+	p.moveTokenForward()
 
 	return p
 }
@@ -35,7 +35,7 @@ func (p *Parser) parseStatements() []ast.Statement {
 		if stmt := p.parseStatement(); stmt != nil {
 			stmts = append(stmts, stmt)
 		}
-		p.readToken()
+		p.moveTokenForward()
 	}
 
 	return stmts
@@ -63,7 +63,7 @@ func (p *Parser) parsePrefixExpression() *ast.PrefixExpression {
 	expr := &ast.PrefixExpression{
 		Operator: ast.Operator(p.currentToken.Literal),
 	}
-	p.readToken()
+	p.moveTokenForward()
 	expr.RExpression = p.parseExpression()
 
 	return expr
@@ -81,7 +81,7 @@ func (p *Parser) parseInteger() *ast.Integer {
 	}
 }
 
-func (p *Parser) readToken() {
+func (p *Parser) moveTokenForward() {
 	p.currentToken = p.lexer.ReadNextToken()
 }
 
