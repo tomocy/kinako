@@ -8,9 +8,26 @@ type Node interface {
 	node()
 }
 
+type Program struct {
+	Statements []Statement
+}
+
+func (p Program) node() {
+}
+
 type Statement interface {
 	Node
 	statement()
+}
+
+type ExpressionStatement struct {
+	Expression Expression
+}
+
+func (s ExpressionStatement) node() {
+}
+
+func (s ExpressionStatement) statement() {
 }
 
 type Expression interface {
