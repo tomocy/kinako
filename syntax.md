@@ -3,8 +3,7 @@ Statements: Statement | Statement Statements | ε
 Statement: ExpressionStatement
 ExpressionStatement: Expression
 Expression: Integer
-Integer: SignedInteger | UnsignedInteger
-SignedInteger: "-" UnsignedInteger
+Integer: UnsignedInteger | "-" UnsignedInteger
 UnsignedInteger: Digit | NonZeroDigit UnsignedInteger | Digit UnsignedInteger
 Digit: "0" | NonZeroDigit
 NonZeroDigit: "1" | "2" | "3" | "4" | "5" | "6" | "7" | "8" | "9"
