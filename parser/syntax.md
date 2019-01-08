@@ -1,5 +1,5 @@
 Program: Statements
-Statements: Statement | Statement Statements
+Statements: Statement | Statement Statements | ε
 Statement: ExpressionStatement
 ExpressionStatement: Expression
 Expression: Integer
