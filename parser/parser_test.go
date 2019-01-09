@@ -22,7 +22,7 @@ func TestParseProgram(t *testing.T) {
 		},
 		&ast.ExpressionStatement{
 			Expression: &ast.PrefixExpression{
-				Operator: ast.Minus,
+				Operator: ast.Negative,
 				RExpression: &ast.Integer{
 					Value: 6,
 				},
