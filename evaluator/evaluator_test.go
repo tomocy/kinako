@@ -14,7 +14,7 @@ func TestEvaluate(t *testing.T) {
 		expect object.Object
 	}{
 		{
-			"5",
+			"5;",
 			&object.Integer{
 				Value: 5,
 			},

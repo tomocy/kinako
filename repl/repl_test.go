@@ -10,7 +10,7 @@ func TestPrintResult(t *testing.T) {
 		input    string
 		expected string
 	}{
-		{"5", "5\n"},
+		{"5;", "5\n"},
 	}
 	for _, test := range tests {
 		w := new(bytes.Buffer)

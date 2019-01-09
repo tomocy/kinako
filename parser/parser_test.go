@@ -10,9 +10,9 @@ import (
 
 func TestParseProgram(t *testing.T) {
 	input := `
-	5
-	-6
-	7 + 8
+	5;
+	-6;
+	7 + 8;
 	`
 	expecteds := []ast.Statement{
 		&ast.ExpressionStatement{

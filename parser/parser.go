@@ -82,7 +82,13 @@ func (p *Parser) parseStatements() []ast.Statement {
 }
 
 func (p *Parser) parseStatement() ast.Statement {
-	return p.parseExpressionStatement()
+	stmt := p.parseExpressionStatement()
+	if !p.willHaveSemicolon() {
+		panic("failed to find semicolon. semicolon should be at the end of a statement")
+	}
+	p.moveTokenForward()
+
+	return stmt
 }
 
 func (p *Parser) parseExpressionStatement() *ast.ExpressionStatement {
@@ -164,6 +170,14 @@ func (p Parser) hasEOF() bool {
 	return p.has(token.EOF)
 }
 
+func (p Parser) willHaveSemicolon() bool {
+	return p.willHave(token.Semicolon)
+}
+
 func (p Parser) has(t token.Type) bool {
 	return p.currentToken.Type == t
+}
+
+func (p Parser) willHave(t token.Type) bool {
+	return p.readingToken.Type == t
 }
