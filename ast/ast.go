@@ -52,6 +52,28 @@ func (e PrefixExpression) node() {
 func (e PrefixExpression) expression() {
 }
 
+type InfixOperator string
+
+const (
+	Plus InfixOperator = "+"
+)
+
+var InfixOperators = map[token.Type]InfixOperator{
+	token.Plus: Plus,
+}
+
+type InfixExpression struct {
+	LExpression Expression
+	Operator    InfixOperator
+	RExpression Expression
+}
+
+func (e InfixExpression) node() {
+}
+
+func (e InfixExpression) expression() {
+}
+
 type Integer struct {
 	Token token.Token
 	Value int64

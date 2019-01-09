@@ -12,6 +12,7 @@ func TestParseProgram(t *testing.T) {
 	input := `
 	5
 	-6
+	7 + 8
 	`
 	expecteds := []ast.Statement{
 		&ast.ExpressionStatement{
@@ -24,6 +25,17 @@ func TestParseProgram(t *testing.T) {
 				Operator: ast.Minus,
 				RExpression: &ast.Integer{
 					Value: 6,
+				},
+			},
+		},
+		&ast.ExpressionStatement{
+			Expression: &ast.InfixExpression{
+				LExpression: &ast.Integer{
+					Value: 7,
+				},
+				Operator: ast.Plus,
+				RExpression: &ast.Integer{
+					Value: 8,
 				},
 			},
 		},
@@ -54,10 +66,12 @@ func testParseExpression(t *testing.T, actual, expected ast.Expression) {
 	switch actual := actual.(type) {
 	case *ast.PrefixExpression:
 		testParsePrefixExpression(t, actual, expected.(*ast.PrefixExpression))
+	case *ast.InfixExpression:
+		testParseInfixExpression(t, actual, expected.(*ast.InfixExpression))
 	case *ast.Integer:
 		testParseInteger(t, actual, expected.(*ast.Integer))
 	default:
-		t.Fatalf("unexpected type of expression: %T\n", actual)
+		t.Fatalf("failed to assert type of expression: %T\n", actual)
 	}
 }
 
@@ -66,6 +80,14 @@ func testParsePrefixExpression(t *testing.T, actual, expected *ast.PrefixExpress
 		t.Errorf("unexpected operator: got %s, but expected %s\n", actual.Operator, expected.Operator)
 	}
 
+	testParseExpression(t, actual.RExpression, expected.RExpression)
+}
+
+func testParseInfixExpression(t *testing.T, actual, expected *ast.InfixExpression) {
+	testParseExpression(t, actual.LExpression, expected.LExpression)
+	if actual.Operator != expected.Operator {
+		t.Errorf("unexpected infix operator: got %s, but expected %s\n", actual.Operator, expected.Operator)
+	}
 	testParseExpression(t, actual.RExpression, expected.RExpression)
 }
 
