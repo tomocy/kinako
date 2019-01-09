@@ -1,7 +1,6 @@
 package parser
 
 import (
-	"log"
 	"testing"
 
 	"github.com/tomocy/kinako/ast"
@@ -12,7 +11,7 @@ func TestParseProgram(t *testing.T) {
 	input := `
 	5;
 	-6;
-	7 + 8;
+	7 + 8 - 9;
 	`
 	expecteds := []ast.Statement{
 		&ast.ExpressionStatement{
@@ -34,8 +33,14 @@ func TestParseProgram(t *testing.T) {
 					Value: 7,
 				},
 				Operator: ast.Plus,
-				RExpression: &ast.Integer{
-					Value: 8,
+				RExpression: &ast.InfixExpression{
+					LExpression: &ast.Integer{
+						Value: 8,
+					},
+					Operator: ast.Minus,
+					RExpression: &ast.Integer{
+						Value: 9,
+					},
 				},
 			},
 		},
@@ -43,9 +48,7 @@ func TestParseProgram(t *testing.T) {
 	parser := New(lexer.New(input))
 	program := parser.ParseProgram()
 	for i := 0; i < len(expecteds); i++ {
-		log.Println(i)
 		testParseStatement(t, program.Statements[i], expecteds[i])
-		log.Println(i)
 	}
 }
 

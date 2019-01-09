@@ -2,6 +2,7 @@ package parser
 
 import (
 	"fmt"
+	"log"
 	"strconv"
 
 	"github.com/tomocy/kinako/ast"
@@ -20,7 +21,8 @@ const (
 )
 
 var precedence = map[token.Type]priority{
-	token.Plus: additive,
+	token.Plus:  additive,
+	token.Minus: additive,
 }
 
 func (p priority) isHigherThan(prec priority) bool {
@@ -59,7 +61,8 @@ func (p *Parser) registerPrefixParsers() {
 
 func (p *Parser) registerInfixParsers() {
 	p.infixParsers = map[token.Type]infixParser{
-		token.Plus: p.parseInfixExpression,
+		token.Plus:  p.parseInfixExpression,
+		token.Minus: p.parseInfixExpression,
 	}
 }
 
@@ -84,6 +87,7 @@ func (p *Parser) parseStatements() []ast.Statement {
 func (p *Parser) parseStatement() ast.Statement {
 	stmt := p.parseExpressionStatement()
 	if !p.willHaveSemicolon() {
+		log.Println(p.currentToken.Literal)
 		panic("failed to find semicolon. semicolon should be at the end of a statement")
 	}
 	p.moveTokenForward()
@@ -99,7 +103,7 @@ func (p *Parser) parseExpressionStatement() *ast.ExpressionStatement {
 
 func (p *Parser) parseExpression(prio priority) ast.Expression {
 	expr := p.prefixParsers[p.currentToken.Type]()
-	for p.checkReadingTokenPriority().isHigherThan(prio) {
+	for !p.willHaveSemicolon() && p.checkReadingTokenPriority().isHigherThan(prio) {
 		p.moveTokenForward()
 		expr = p.infixParsers[p.currentToken.Type](expr)
 	}
