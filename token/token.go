@@ -33,9 +33,9 @@ var types = map[string]Type{
 	"-": Minus,
 	"*": Asterisk,
 	"/": Slash,
+	"=": Assign,
 	"(": LParen,
 	")": RParen,
-	"=": Assign,
 }
 
 func LookUpType(s string) Type {
