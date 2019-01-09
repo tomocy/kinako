@@ -54,7 +54,7 @@ func testParseStatement(t *testing.T, actual, expected ast.Statement) {
 	case *ast.ExpressionStatement:
 		testParseExpressionStatement(t, actual, expected.(*ast.ExpressionStatement))
 	default:
-		t.Fatalf("unexpected type of statement: %T\n", actual)
+		t.Fatalf("failed to assert type of statement: %T, did you forget to add the type in switch?\n", actual)
 	}
 }
 
@@ -71,7 +71,7 @@ func testParseExpression(t *testing.T, actual, expected ast.Expression) {
 	case *ast.Integer:
 		testParseInteger(t, actual, expected.(*ast.Integer))
 	default:
-		t.Fatalf("failed to assert type of expression: %T\n", actual)
+		t.Fatalf("failed to assert type of expression: %T, did you forget to add the type in switch?\n", actual)
 	}
 }
 
@@ -79,7 +79,6 @@ func testParsePrefixExpression(t *testing.T, actual, expected *ast.PrefixExpress
 	if actual.Operator != expected.Operator {
 		t.Errorf("unexpected operator: got %s, but expected %s\n", actual.Operator, expected.Operator)
 	}
-
 	testParseExpression(t, actual.RExpression, expected.RExpression)
 }
 
