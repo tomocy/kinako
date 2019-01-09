@@ -103,7 +103,7 @@ func (p *Parser) parseExpression(prio priority) ast.Expression {
 
 func (p *Parser) parsePrefixExpression() ast.Expression {
 	expr := &ast.PrefixExpression{
-		Operator: ast.Operator(p.currentToken.Literal),
+		Operator: ast.PrefixOperators[p.currentToken.Type],
 	}
 	p.moveTokenForward()
 	expr.RExpression = p.parseExpression(prefix)

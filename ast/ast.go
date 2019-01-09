@@ -4,12 +4,6 @@ import (
 	"github.com/tomocy/kinako/token"
 )
 
-type Operator string
-
-const (
-	Minus Operator = "-"
-)
-
 type Node interface {
 	node()
 }
@@ -42,8 +36,18 @@ type Expression interface {
 }
 
 type PrefixExpression struct {
-	Operator    Operator
+	Operator    PrefixOperator
 	RExpression Expression
+}
+
+type PrefixOperator string
+
+const (
+	Negative PrefixOperator = "-"
+)
+
+var PrefixOperators = map[token.Type]PrefixOperator{
+	token.Minus: Negative,
 }
 
 func (e PrefixExpression) node() {
