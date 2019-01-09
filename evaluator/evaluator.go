@@ -27,6 +27,8 @@ func (e *Evaluator) evaluate(node ast.Node) object.Object {
 		return e.evaluateExpressionStatement(node)
 	case *ast.PrefixExpression:
 		return e.evaluatePrefixExpression(node)
+	case *ast.InfixExpression:
+		return e.evaluateInfixExpression(node)
 	case *ast.Integer:
 		return e.evaluateInteger(node)
 	default:
@@ -56,6 +58,23 @@ func (e *Evaluator) evaluatePrefixExpression(node *ast.PrefixExpression) object.
 	}
 
 	return nil
+}
+
+func (e *Evaluator) evaluateInfixExpression(node *ast.InfixExpression) object.Object {
+	left := e.evaluate(node.LExpression)
+	right := e.evaluate(node.RExpression)
+	switch node.Operator {
+	case ast.Plus:
+		return e.evaluateAddition(left, right)
+	default:
+		panic("faild to assert infix operator: %s. this is developer's falt, so contact the developer")
+	}
+}
+
+func (e *Evaluator) evaluateAddition(left, right object.Object) object.Object {
+	return &object.Integer{
+		Value: left.(*object.Integer).Value + right.(*object.Integer).Value,
+	}
 }
 
 func (e *Evaluator) evaluateInteger(node *ast.Integer) *object.Integer {
