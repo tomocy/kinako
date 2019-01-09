@@ -19,6 +19,8 @@ const (
 
 	Assign = "Assign"
 
+	Semicolon = ";"
+
 	LParen = "LParen"
 	RParen = "RParen"
 
@@ -34,6 +36,7 @@ var types = map[string]Type{
 	"*": Asterisk,
 	"/": Slash,
 	"=": Assign,
+	";": Semicolon,
 	"(": LParen,
 	")": RParen,
 }
