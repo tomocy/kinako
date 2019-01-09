@@ -35,7 +35,7 @@ func TestEvaluate(t *testing.T) {
 		case *object.Integer:
 			testEvaluateIntegerObject(t, obj, test.expect.(*object.Integer))
 		default:
-			t.Fatalf("unexpected type of object: %T\n", obj)
+			t.Fatalf("failed to assert type of object: %T, did you forget to add the type in switch?\n", obj)
 		}
 	}
 }
