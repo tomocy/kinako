@@ -11,6 +11,8 @@ func TestPrintResult(t *testing.T) {
 		expected string
 	}{
 		{"5;", "5\n"},
+		{"-6;", "-6\n"},
+		{"7 + 8 - 9 * 10 / 11;", "15\n"},
 	}
 	for _, test := range tests {
 		w := new(bytes.Buffer)
