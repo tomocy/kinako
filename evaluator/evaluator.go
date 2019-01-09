@@ -25,6 +25,8 @@ func (e *Evaluator) evaluate(node ast.Node) object.Object {
 		return e.evaluateProgram(node)
 	case *ast.ExpressionStatement:
 		return e.evaluateExpressionStatement(node)
+	case *ast.PrefixExpression:
+		return e.evaluatePrefixExpression(node)
 	case *ast.Integer:
 		return e.evaluateInteger(node)
 	default:
@@ -43,6 +45,17 @@ func (e *Evaluator) evaluateProgram(node *ast.Program) object.Object {
 
 func (e *Evaluator) evaluateExpressionStatement(node *ast.ExpressionStatement) object.Object {
 	return e.evaluate(node.Expression)
+}
+
+func (e *Evaluator) evaluatePrefixExpression(node *ast.PrefixExpression) object.Object {
+	right := e.evaluate(node.RExpression)
+	if node.Operator == ast.Negative {
+		return &object.Integer{
+			Value: -1 * right.(*object.Integer).Value,
+		}
+	}
+
+	return nil
 }
 
 func (e *Evaluator) evaluateInteger(node *ast.Integer) *object.Integer {

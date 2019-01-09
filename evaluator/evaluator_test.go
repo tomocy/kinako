@@ -19,6 +19,12 @@ func TestEvaluate(t *testing.T) {
 				Value: 5,
 			},
 		},
+		{
+			"-6;",
+			&object.Integer{
+				Value: -6,
+			},
+		},
 	}
 	for _, test := range tests {
 		parser := parser.New(lexer.New(test.input))
