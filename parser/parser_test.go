@@ -6,7 +6,6 @@ import (
 
 	"github.com/tomocy/kinako/ast"
 	"github.com/tomocy/kinako/lexer"
-	"github.com/tomocy/kinako/token"
 )
 
 func TestParseProgram(t *testing.T) {
@@ -17,10 +16,6 @@ func TestParseProgram(t *testing.T) {
 	expecteds := []ast.Statement{
 		&ast.ExpressionStatement{
 			Expression: &ast.Integer{
-				Token: token.Token{
-					Type:    token.Integer,
-					Literal: "5",
-				},
 				Value: 5,
 			},
 		},
@@ -28,10 +23,6 @@ func TestParseProgram(t *testing.T) {
 			Expression: &ast.PrefixExpression{
 				Operator: ast.Minus,
 				RExpression: &ast.Integer{
-					Token: token.Token{
-						Type:    token.Integer,
-						Literal: "6",
-					},
 					Value: 6,
 				},
 			},
@@ -79,9 +70,6 @@ func testParsePrefixExpression(t *testing.T, actual, expected *ast.PrefixExpress
 }
 
 func testParseInteger(t *testing.T, actual, expected *ast.Integer) {
-	if actual.Token != expected.Token {
-		t.Errorf("unexpected token: got %v, but expected %v\n", actual.Token, expected.Token)
-	}
 	if actual.Value != expected.Value {
 		t.Errorf("unexpected value: got %d, but expected %d\n", actual.Value, expected.Value)
 	}
