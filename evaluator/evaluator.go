@@ -77,6 +77,8 @@ func (e *Evaluator) evaluateInfixExpression(node *ast.InfixExpression) object.Ob
 		return e.evaluateSubtraction(left, right)
 	case ast.Asterisk:
 		return e.evaluateMultiplication(left, right)
+	case ast.Slash:
+		return e.evaluateDivision(left, right)
 	default:
 		panic(fmt.Sprintf("failed to assert infix operator type because of developer. contact him or her to inform the missing type is %s", node.Operator))
 	}
@@ -97,6 +99,17 @@ func (e *Evaluator) evaluateSubtraction(left, right object.Object) object.Object
 func (e *Evaluator) evaluateMultiplication(left, right object.Object) object.Object {
 	return &object.Integer{
 		Value: left.(*object.Integer).Value * right.(*object.Integer).Value,
+	}
+}
+
+func (e *Evaluator) evaluateDivision(left, right object.Object) object.Object {
+	rightVal := right.(*object.Integer).Value
+	if rightVal == 0 {
+		panic("divided by zero")
+	}
+
+	return &object.Integer{
+		Value: left.(*object.Integer).Value / rightVal,
 	}
 }
 

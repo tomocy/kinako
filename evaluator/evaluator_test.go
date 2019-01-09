@@ -26,9 +26,9 @@ func TestEvaluate(t *testing.T) {
 			},
 		},
 		{
-			"7 + 8 - 9 * 10;",
+			"7 + 8 - 9 * 10 / 11;",
 			&object.Integer{
-				Value: 60,
+				Value: 5,
 			},
 		},
 	}
