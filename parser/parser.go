@@ -25,6 +25,7 @@ var precedence = map[token.Type]priority{
 	token.Plus:     additive,
 	token.Minus:    additive,
 	token.Asterisk: multiplicative,
+	token.Slash:    multiplicative,
 }
 
 func (p priority) isHigherThan(prec priority) bool {
@@ -66,6 +67,7 @@ func (p *Parser) registerInfixParsers() {
 		token.Plus:     p.parseInfixExpression,
 		token.Minus:    p.parseInfixExpression,
 		token.Asterisk: p.parseInfixExpression,
+		token.Slash:    p.parseInfixExpression,
 	}
 }
 

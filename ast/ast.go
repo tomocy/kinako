@@ -62,12 +62,14 @@ const (
 	Plus     InfixOperator = "+"
 	Minus                  = "-"
 	Asterisk               = "*"
+	Slash                  = "/"
 )
 
 var InfixOperators = map[token.Type]InfixOperator{
 	token.Plus:     Plus,
 	token.Minus:    Minus,
 	token.Asterisk: Asterisk,
+	token.Slash:    Slash,
 }
 
 type InfixExpression struct {
