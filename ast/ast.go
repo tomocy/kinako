@@ -89,8 +89,8 @@ type Integer struct {
 	Value int64
 }
 
-func (i Integer) node() {
+func (e Integer) node() {
 }
 
-func (i Integer) expression() {
+func (e Integer) expression() {
 }
