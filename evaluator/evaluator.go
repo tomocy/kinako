@@ -50,14 +50,19 @@ func (e *Evaluator) evaluateExpressionStatement(node *ast.ExpressionStatement) o
 }
 
 func (e *Evaluator) evaluatePrefixExpression(node *ast.PrefixExpression) object.Object {
-	right := e.evaluate(node.RExpression)
-	if node.Operator == ast.Negative {
-		return &object.Integer{
-			Value: -1 * right.(*object.Integer).Value,
-		}
+	obj := e.evaluate(node.RExpression)
+	switch node.Operator {
+	case ast.Negative:
+		return e.evaluateNegativeInteger(obj.(*object.Integer))
+	default:
+		panic("faild to assert infix operator: %s. this is developer's falt, so contact the developer")
 	}
+}
 
-	return nil
+func (e *Evaluator) evaluateNegativeInteger(obj *object.Integer) *object.Integer {
+	return &object.Integer{
+		Value: -1 * obj.Value,
+	}
 }
 
 func (e *Evaluator) evaluateInfixExpression(node *ast.InfixExpression) object.Object {
