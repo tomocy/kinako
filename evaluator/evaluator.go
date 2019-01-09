@@ -73,6 +73,8 @@ func (e *Evaluator) evaluateInfixExpression(node *ast.InfixExpression) object.Ob
 	switch node.Operator {
 	case ast.Plus:
 		return e.evaluateAddition(left, right)
+	case ast.Minus:
+		return e.evaluateSubtraction(left, right)
 	default:
 		panic(fmt.Sprintf("failed to assert infix operator type because of developer. contact him or her to inform the missing type is %s", node.Operator))
 	}
@@ -81,6 +83,12 @@ func (e *Evaluator) evaluateInfixExpression(node *ast.InfixExpression) object.Ob
 func (e *Evaluator) evaluateAddition(left, right object.Object) object.Object {
 	return &object.Integer{
 		Value: left.(*object.Integer).Value + right.(*object.Integer).Value,
+	}
+}
+
+func (e *Evaluator) evaluateSubtraction(left, right object.Object) object.Object {
+	return &object.Integer{
+		Value: left.(*object.Integer).Value - right.(*object.Integer).Value,
 	}
 }
 
