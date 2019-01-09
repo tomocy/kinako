@@ -1,6 +1,8 @@
 package evaluator
 
 import (
+	"fmt"
+
 	"github.com/tomocy/kinako/ast"
 	"github.com/tomocy/kinako/object"
 )
@@ -55,7 +57,7 @@ func (e *Evaluator) evaluatePrefixExpression(node *ast.PrefixExpression) object.
 	case ast.Negative:
 		return e.evaluateNegativeInteger(obj.(*object.Integer))
 	default:
-		panic("faild to assert infix operator: %s. this is developer's falt, so contact the developer")
+		panic(fmt.Sprintf("failed to assert prefix operator type because of developer. contact him or her to inform the missing type is %s", node.Operator))
 	}
 }
 
@@ -72,7 +74,7 @@ func (e *Evaluator) evaluateInfixExpression(node *ast.InfixExpression) object.Ob
 	case ast.Plus:
 		return e.evaluateAddition(left, right)
 	default:
-		panic("faild to assert infix operator: %s. this is developer's falt, so contact the developer")
+		panic(fmt.Sprintf("failed to assert infix operator type because of developer. contact him or her to inform the missing type is %s", node.Operator))
 	}
 }
 
