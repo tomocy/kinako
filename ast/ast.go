@@ -59,13 +59,15 @@ func (e PrefixExpression) expression() {
 type InfixOperator string
 
 const (
-	Plus  InfixOperator = "+"
-	Minus               = "-"
+	Plus     InfixOperator = "+"
+	Minus                  = "-"
+	Asterisk               = "*"
 )
 
 var InfixOperators = map[token.Type]InfixOperator{
-	token.Plus:  Plus,
-	token.Minus: Minus,
+	token.Plus:     Plus,
+	token.Minus:    Minus,
+	token.Asterisk: Asterisk,
 }
 
 type InfixExpression struct {

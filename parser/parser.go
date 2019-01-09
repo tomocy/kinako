@@ -16,13 +16,15 @@ const (
 	_ priority = iota
 	lowest
 	additive
+	multiplicative
 	prefix
 	infix
 )
 
 var precedence = map[token.Type]priority{
-	token.Plus:  additive,
-	token.Minus: additive,
+	token.Plus:     additive,
+	token.Minus:    additive,
+	token.Asterisk: multiplicative,
 }
 
 func (p priority) isHigherThan(prec priority) bool {
@@ -61,8 +63,9 @@ func (p *Parser) registerPrefixParsers() {
 
 func (p *Parser) registerInfixParsers() {
 	p.infixParsers = map[token.Type]infixParser{
-		token.Plus:  p.parseInfixExpression,
-		token.Minus: p.parseInfixExpression,
+		token.Plus:     p.parseInfixExpression,
+		token.Minus:    p.parseInfixExpression,
+		token.Asterisk: p.parseInfixExpression,
 	}
 }
 

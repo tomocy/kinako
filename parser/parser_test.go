@@ -9,9 +9,8 @@ import (
 
 func TestParseProgram(t *testing.T) {
 	input := `
-	5;
-	-6;
-	7 + 8 - 9;
+	5; -6;
+	7 + 8 - 9 * 10;
 	`
 	expecteds := []ast.Statement{
 		&ast.ExpressionStatement{
@@ -38,8 +37,14 @@ func TestParseProgram(t *testing.T) {
 						Value: 8,
 					},
 					Operator: ast.Minus,
-					RExpression: &ast.Integer{
-						Value: 9,
+					RExpression: &ast.InfixExpression{
+						LExpression: &ast.Integer{
+							Value: 9,
+						},
+						Operator: ast.Asterisk,
+						RExpression: &ast.Integer{
+							Value: 10,
+						},
 					},
 				},
 			},
