@@ -36,8 +36,7 @@ func (l *Lexer) readToken() token.Token {
 	switch l.currentCharacter {
 	case
 		'+', '-', '*', '/',
-		'(', ')',
-		'=':
+		'=', '(', ')':
 		return l.readSingleToken()
 	case eof:
 		return l.readEOF()
