@@ -37,6 +37,12 @@ func TestEvaluate(t *testing.T) {
 				Value: 1,
 			},
 		},
+		{
+			"15; 16",
+			&object.Error{
+				Message: "failed to find semicolon. semicolon should be at the end of a statement",
+			},
+		},
 	}
 	for _, test := range tests {
 		parser := parser.New(lexer.New(test.input))
@@ -46,6 +52,8 @@ func TestEvaluate(t *testing.T) {
 		switch obj := obj.(type) {
 		case *object.Integer:
 			testEvaluateIntegerObject(t, obj, test.expect.(*object.Integer))
+		case *object.Error:
+			testEvaluateError(t, obj, test.expect.(*object.Error))
 		default:
 			t.Fatalf("failed to assert type of object: %T, did you forget to add the type in switch?\n", obj)
 		}
@@ -55,5 +63,11 @@ func TestEvaluate(t *testing.T) {
 func testEvaluateIntegerObject(t *testing.T, actual, expected *object.Integer) {
 	if actual.Value != expected.Value {
 		t.Errorf("unexpected value: got %d, but expected %d\n", actual.Value, expected.Value)
+	}
+}
+
+func testEvaluateError(t *testing.T, actual, expected *object.Error) {
+	if actual.Message != expected.Message {
+		t.Errorf("unexpected message: got %s, but expected %s\n", actual.Message, expected.Message)
 	}
 }
