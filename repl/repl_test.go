@@ -13,6 +13,7 @@ func TestPrintResult(t *testing.T) {
 		{"5;", "5\n"},
 		{"-6;", "-6\n"},
 		{"7 + 8 - 9 * 10 / 11;", "15\n"},
+		{"(12 + 13) / 14;", "1\n"},
 	}
 	for _, test := range tests {
 		w := new(bytes.Buffer)
