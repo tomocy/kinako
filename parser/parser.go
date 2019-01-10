@@ -2,7 +2,6 @@ package parser
 
 import (
 	"fmt"
-	"log"
 	"strconv"
 
 	"github.com/tomocy/kinako/ast"
@@ -93,7 +92,6 @@ func (p *Parser) parseStatements() []ast.Statement {
 func (p *Parser) parseStatement() ast.Statement {
 	stmt := p.parseExpressionStatement()
 	if !p.willHaveSemicolon() {
-		log.Println(p.currentToken.Literal)
 		panic("failed to find semicolon. semicolon should be at the end of a statement")
 	}
 	p.moveTokenForward()
