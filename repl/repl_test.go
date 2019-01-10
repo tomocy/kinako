@@ -14,6 +14,7 @@ func TestPrintResult(t *testing.T) {
 		{"-6;", "-6\n"},
 		{"7 + 8 - 9 * 10 / 11;", "15\n"},
 		{"(12 + 13) / 14;", "1\n"},
+		{"15; 16", "failed to find semicolon. semicolon should be at the end of a statement\n"},
 	}
 	for _, test := range tests {
 		w := new(bytes.Buffer)
