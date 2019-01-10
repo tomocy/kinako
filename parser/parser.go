@@ -58,6 +58,7 @@ func New(l *lexer.Lexer) *Parser {
 func (p *Parser) registerPrefixParsers() {
 	p.prefixParsers = map[token.Type]prefixParser{
 		token.Minus:   p.parsePrefixExpression,
+		token.LParen:  p.parseGroupExpression,
 		token.Integer: p.parseInteger,
 	}
 }
@@ -133,6 +134,17 @@ func (p *Parser) parseInfixExpression(left ast.Expression) ast.Expression {
 	}
 	p.moveTokenForward()
 	expr.RExpression = p.parseExpression(p.checkCurrentTokenPriority())
+
+	return expr
+}
+
+func (p *Parser) parseGroupExpression() ast.Expression {
+	p.moveTokenForward()
+	expr := p.parseExpression(lowest)
+	if !p.willHave(token.RParen) {
+		panic("failed to find rparen which is the pair of lparen")
+	}
+	p.moveTokenForward()
 
 	return expr
 }

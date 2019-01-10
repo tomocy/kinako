@@ -11,6 +11,7 @@ func TestParseProgram(t *testing.T) {
 	input := `
 	5; -6;
 	7 + 8 - 9 * 10 / 11;
+	(12 + 13) / 14;
 	`
 	expecteds := []ast.Statement{
 		&ast.ExpressionStatement{
@@ -52,6 +53,23 @@ func TestParseProgram(t *testing.T) {
 							},
 						},
 					},
+				},
+			},
+		},
+		&ast.ExpressionStatement{
+			Expression: &ast.InfixExpression{
+				LExpression: &ast.InfixExpression{
+					LExpression: &ast.Integer{
+						Value: 12,
+					},
+					Operator: ast.Plus,
+					RExpression: &ast.Integer{
+						Value: 13,
+					},
+				},
+				Operator: ast.Slash,
+				RExpression: &ast.Integer{
+					Value: 14,
 				},
 			},
 		},
