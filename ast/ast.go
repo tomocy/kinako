@@ -30,6 +30,16 @@ func (s ExpressionStatement) node() {
 func (s ExpressionStatement) statement() {
 }
 
+type BadStatement struct {
+	Message string
+}
+
+func (s BadStatement) node() {
+}
+
+func (s BadStatement) statement() {
+}
+
 type Expression interface {
 	Node
 	expression()

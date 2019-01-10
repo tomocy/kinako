@@ -12,6 +12,7 @@ func TestParseProgram(t *testing.T) {
 	5; -6;
 	7 + 8 - 9 * 10 / 11;
 	(12 + 13) / 14;
+	15; 16
 	`
 	expecteds := []ast.Statement{
 		&ast.ExpressionStatement{
@@ -73,6 +74,14 @@ func TestParseProgram(t *testing.T) {
 				},
 			},
 		},
+		&ast.ExpressionStatement{
+			Expression: &ast.Integer{
+				Value: 15,
+			},
+		},
+		&ast.BadStatement{
+			Message: "failed to find semicolon. semicolon should be at the end of a statement",
+		},
 	}
 	parser := New(lexer.New(input))
 	program := parser.ParseProgram()
@@ -85,6 +94,8 @@ func testParseStatement(t *testing.T, actual, expected ast.Statement) {
 	switch actual := actual.(type) {
 	case *ast.ExpressionStatement:
 		testParseExpressionStatement(t, actual, expected.(*ast.ExpressionStatement))
+	case *ast.BadStatement:
+		testParseBadStatement(t, actual, expected.(*ast.BadStatement))
 	default:
 		t.Fatalf("failed to assert type of statement: %T, did you forget to add the type in switch?\n", actual)
 	}
@@ -125,5 +136,11 @@ func testParseInfixExpression(t *testing.T, actual, expected *ast.InfixExpressio
 func testParseInteger(t *testing.T, actual, expected *ast.Integer) {
 	if actual.Value != expected.Value {
 		t.Errorf("unexpected value: got %d, but expected %d\n", actual.Value, expected.Value)
+	}
+}
+
+func testParseBadStatement(t *testing.T, actual, expected *ast.BadStatement) {
+	if actual.Message != expected.Message {
+		t.Errorf("unexpected message: got %s, but expected %s\n", actual.Message, expected.Message)
 	}
 }
