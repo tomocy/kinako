@@ -122,14 +122,14 @@ func (p *Parser) parseVariableDeclaration() *ast.VariableDeclaration {
 		return nil
 	}
 	stmt := &ast.VariableDeclaration{
-		Identifier: p.currentToken.Literal,
+		Identifier: p.parseIdentifier().(*ast.Identifier),
 	}
 
 	if err := p.expectAndMoveTokenForward(token.Identifier); err != nil {
 		p.keepBadStatement("failed to find type name of variable")
 		return nil
 	}
-	stmt.Type = p.currentToken.Literal
+	stmt.Type = p.parseIdentifier().(*ast.Identifier)
 
 	if err := p.expectAndMoveTokenForward(token.Assign); err != nil {
 		return stmt

@@ -31,8 +31,8 @@ func (s ExpressionStatement) statement() {
 }
 
 type VariableDeclaration struct {
-	Identifier string
-	Type       string
+	Identifier *Identifier
+	Type       *Identifier
 	Expression Expression
 }
 

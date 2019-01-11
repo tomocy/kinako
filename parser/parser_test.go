@@ -81,12 +81,20 @@ func TestParseProgram(t *testing.T) {
 			},
 		},
 		&ast.VariableDeclaration{
-			Identifier: "x",
-			Type:       "int",
+			Identifier: &ast.Identifier{
+				Name: "x",
+			},
+			Type: &ast.Identifier{
+				Name: "int",
+			},
 		},
 		&ast.VariableDeclaration{
-			Identifier: "x",
-			Type:       "int",
+			Identifier: &ast.Identifier{
+				Name: "x",
+			},
+			Type: &ast.Identifier{
+				Name: "int",
+			},
 			Expression: &ast.Integer{
 				Value: 15,
 			},
@@ -181,11 +189,11 @@ func testParseInteger(t *testing.T, actual, expected *ast.Integer) {
 }
 
 func testParseVariableDeclaration(t *testing.T, actual, expected *ast.VariableDeclaration) {
-	if actual.Identifier != expected.Identifier {
-		t.Errorf("unexpected identifier: got %s, but expected %s\n", actual.Identifier, expected.Identifier)
+	if actual.Identifier.Name != expected.Identifier.Name {
+		t.Errorf("unexpected identifier name: got %s, but expected %s\n", actual.Identifier, expected.Identifier)
 	}
-	if actual.Type != expected.Type {
-		t.Errorf("unexpected type: got %s, but expected %s\n", actual.Type, expected.Type)
+	if actual.Type.Name != expected.Type.Name {
+		t.Errorf("unexpected type name: got %s, but expected %s\n", actual.Type, expected.Type)
 	}
 }
 
