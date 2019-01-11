@@ -13,13 +13,22 @@ import (
 const prompt = "> "
 
 type REPL struct {
-	Reader io.Reader
-	Writer io.Writer
+	reader    io.Reader
+	writer    io.Writer
+	evaluator *evaluator.Evaluator
+}
+
+func New(r io.Reader, w io.Writer) *REPL {
+	return &REPL{
+		reader:    r,
+		writer:    w,
+		evaluator: evaluator.New(),
+	}
 }
 
 func (r REPL) Start() {
 	r.printPrompt()
-	scanner := bufio.NewScanner(r.Reader)
+	scanner := bufio.NewScanner(r.reader)
 	for scanner.Scan() {
 		input := scanner.Text()
 		r.printResult(input)
@@ -28,13 +37,12 @@ func (r REPL) Start() {
 }
 
 func (r REPL) printPrompt() {
-	fmt.Fprint(r.Writer, prompt)
+	fmt.Fprint(r.writer, prompt)
 }
 
 func (r REPL) printResult(input string) {
 	parser := parser.New(lexer.New(input))
 	program := parser.ParseProgram()
-	evaluator := evaluator.New(program)
-	result := evaluator.Evaluate()
-	fmt.Fprintln(r.Writer, result)
+	result := r.evaluator.Evaluate(program)
+	fmt.Fprintln(r.writer, result)
 }

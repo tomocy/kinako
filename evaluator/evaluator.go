@@ -14,22 +14,16 @@ var zeroValues = map[string]object.Object{
 }
 
 type Evaluator struct {
-	node ast.Node
-	env  Environment
+	env Environment
 }
 
-func New(node ast.Node) *Evaluator {
+func New() *Evaluator {
 	return &Evaluator{
-		node: node,
-		env:  make(Environment),
+		env: make(Environment),
 	}
 }
 
-func (e *Evaluator) Evaluate() object.Object {
-	return e.evaluate(e.node)
-}
-
-func (e *Evaluator) evaluate(node ast.Node) object.Object {
+func (e *Evaluator) Evaluate(node ast.Node) object.Object {
 	switch node := node.(type) {
 	case *ast.Program:
 		return e.evaluateProgram(node)
@@ -55,14 +49,14 @@ func (e *Evaluator) evaluate(node ast.Node) object.Object {
 func (e *Evaluator) evaluateProgram(node *ast.Program) object.Object {
 	var obj object.Object
 	for _, stmt := range node.Statements {
-		obj = e.evaluate(stmt)
+		obj = e.Evaluate(stmt)
 	}
 
 	return obj
 }
 
 func (e *Evaluator) evaluateExpressionStatement(node *ast.ExpressionStatement) object.Object {
-	return e.evaluate(node.Expression)
+	return e.Evaluate(node.Expression)
 }
 
 func (e *Evaluator) evaluateVariableDeclaration(node *ast.VariableDeclaration) object.Object {
@@ -70,7 +64,7 @@ func (e *Evaluator) evaluateVariableDeclaration(node *ast.VariableDeclaration) o
 	if node.Expression == nil {
 		obj = zeroValues[node.Type.Name]
 	} else {
-		obj = e.evaluate(node.Expression)
+		obj = e.Evaluate(node.Expression)
 	}
 
 	e.env[node.Identifier.Name] = obj
@@ -85,7 +79,7 @@ func (e *Evaluator) evaluateBadStatement(node *ast.BadStatement) object.Object {
 }
 
 func (e *Evaluator) evaluatePrefixExpression(node *ast.PrefixExpression) object.Object {
-	obj := e.evaluate(node.RExpression)
+	obj := e.Evaluate(node.RExpression)
 	switch node.Operator {
 	case ast.Negative:
 		return e.evaluateNegativeInteger(obj.(*object.Integer))
@@ -101,8 +95,8 @@ func (e *Evaluator) evaluateNegativeInteger(obj *object.Integer) *object.Integer
 }
 
 func (e *Evaluator) evaluateInfixExpression(node *ast.InfixExpression) object.Object {
-	left := e.evaluate(node.LExpression)
-	right := e.evaluate(node.RExpression)
+	left := e.Evaluate(node.LExpression)
+	right := e.Evaluate(node.RExpression)
 	switch node.Operator {
 	case ast.Plus:
 		return e.evaluateAddition(left, right)

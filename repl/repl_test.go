@@ -21,9 +21,7 @@ func TestPrintResult(t *testing.T) {
 	}
 	for _, test := range tests {
 		w := new(bytes.Buffer)
-		mock := REPL{
-			Writer: w,
-		}
+		mock := New(nil, w)
 		mock.printResult(test.input)
 		actual := w.String()
 		if actual != test.expected {

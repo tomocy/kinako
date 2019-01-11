@@ -77,8 +77,7 @@ func TestEvaluate(t *testing.T) {
 	for _, test := range tests {
 		parser := parser.New(lexer.New(test.input))
 		program := parser.ParseProgram()
-		evaluator := New(program)
-		obj := evaluator.Evaluate()
+		obj := New().Evaluate(program)
 		switch obj := obj.(type) {
 		case *object.Integer:
 			testEvaluateIntegerObject(t, obj, test.expect.(*object.Integer))

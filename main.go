@@ -7,9 +7,6 @@ import (
 )
 
 func main() {
-	repl := repl.REPL{
-		Reader: os.Stdin,
-		Writer: os.Stdout,
-	}
+	repl := repl.New(os.Stdin, os.Stdout)
 	repl.Start()
 }
