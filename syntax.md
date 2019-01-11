@@ -2,7 +2,7 @@ Program: Statements
 Statements: Statement | Statement Statements | ε
 Statement: ExpressionStatement ";" | VariableDeclaration ";"
 ExpressionStatement: Expression
-Expression: PrefixExpression | InfixExpression | GroupExpression | UnsignedInteger
+Expression: PrefixExpression | InfixExpression | GroupExpression | Identifier | UnsignedInteger
 PrefixExpression: SignedInteger
 SignedInteger: "-" UnsignedInteger
 InfixExpression: Expression InfixOperator Expression
