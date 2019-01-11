@@ -24,8 +24,8 @@ const (
 	LParen = "LParen"
 	RParen = "RParen"
 
-	Ident   = "Ident"
-	Integer = "Integer"
+	Identifier = "Identifier"
+	Integer    = "Integer"
 
 	Var = "var"
 )
@@ -58,5 +58,5 @@ func LookUpKeywordOrIdentifier(s string) Type {
 		return t
 	}
 
-	return Ident
+	return Identifier
 }

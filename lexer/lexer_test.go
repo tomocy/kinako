@@ -20,7 +20,7 @@ func TestReadNextToken(t *testing.T) {
 		{token.Asterisk, "*"},
 		{token.LParen, "("}, {token.Integer, "8"}, {token.Minus, "-"}, {token.Integer, "9"}, {token.RParen, ")"},
 		{token.RParen, ")"}, {token.Slash, "/"}, {token.Integer, "10"},
-		{token.Var, "var"}, {token.Ident, "x"}, {token.Ident, "int"}, {token.Assign, "="}, {token.Integer, "10"},
+		{token.Var, "var"}, {token.Identifier, "x"}, {token.Identifier, "int"}, {token.Assign, "="}, {token.Integer, "10"},
 		{token.Semicolon, ";"},
 		{token.EOF, ""},
 	}
