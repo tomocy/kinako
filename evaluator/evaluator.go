@@ -27,6 +27,8 @@ func (e *Evaluator) evaluate(node ast.Node) object.Object {
 		return e.evaluateProgram(node)
 	case *ast.ExpressionStatement:
 		return e.evaluateExpressionStatement(node)
+	case *ast.VariableDeclaration:
+		return e.evaluateVariableDeclaration(node)
 	case *ast.BadStatement:
 		return e.evaluateBadStatement(node)
 	case *ast.PrefixExpression:
@@ -50,6 +52,10 @@ func (e *Evaluator) evaluateProgram(node *ast.Program) object.Object {
 }
 
 func (e *Evaluator) evaluateExpressionStatement(node *ast.ExpressionStatement) object.Object {
+	return e.evaluate(node.Expression)
+}
+
+func (e *Evaluator) evaluateVariableDeclaration(node *ast.VariableDeclaration) object.Object {
 	return e.evaluate(node.Expression)
 }
 

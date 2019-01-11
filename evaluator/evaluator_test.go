@@ -38,6 +38,12 @@ func TestEvaluate(t *testing.T) {
 			},
 		},
 		{
+			"var x int = 10;",
+			&object.Integer{
+				Value: 10,
+			},
+		},
+		{
 			"15; 16",
 			&object.Error{
 				Message: "failed to find semicolon",
