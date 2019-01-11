@@ -50,7 +50,13 @@ func TestEvaluate(t *testing.T) {
 			},
 		},
 		{
-			"15; 16",
+			"var x int = 17; x;",
+			&object.Integer{
+				Value: 17,
+			},
+		},
+		{
+			"15; 16", // TODO: use zero as test value for failure
 			&object.Error{
 				Message: "failed to find semicolon",
 			},
@@ -59,6 +65,12 @@ func TestEvaluate(t *testing.T) {
 			"5 / 0;",
 			&object.Error{
 				Message: "divided by zero",
+			},
+		},
+		{
+			"y;",
+			&object.Error{
+				Message: "undefined variable: y",
 			},
 		},
 	}

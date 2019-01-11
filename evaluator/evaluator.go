@@ -43,6 +43,8 @@ func (e *Evaluator) evaluate(node ast.Node) object.Object {
 		return e.evaluatePrefixExpression(node)
 	case *ast.InfixExpression:
 		return e.evaluateInfixExpression(node)
+	case *ast.Identifier:
+		return e.evaluateIdentifier(node)
 	case *ast.Integer:
 		return e.evaluateInteger(node)
 	default:
@@ -143,6 +145,16 @@ func (e *Evaluator) evaluateDivision(left, right object.Object) object.Object {
 
 	return &object.Integer{
 		Value: left.(*object.Integer).Value / rightVal,
+	}
+}
+
+func (e *Evaluator) evaluateIdentifier(node *ast.Identifier) object.Object {
+	if obj, ok := e.env[node.Name]; ok {
+		return obj
+	}
+
+	return &object.Error{
+		Message: fmt.Sprintf("undefined variable: %s", node.Name),
 	}
 }
 
