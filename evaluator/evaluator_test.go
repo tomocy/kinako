@@ -56,7 +56,7 @@ func TestEvaluate(t *testing.T) {
 			},
 		},
 		{
-			"15; 16", // TODO: use zero as test value for failure
+			"0; 0",
 			&object.Error{
 				Message: "failed to find semicolon",
 			},
