@@ -12,7 +12,7 @@ func TestParseProgram(t *testing.T) {
 	5; -6;
 	7 + 8 - 9 * 10 / 11;
 	(12 + 13) / 14;
-	15; 16
+	0; 0
 	`
 	expecteds := []ast.Statement{
 		&ast.ExpressionStatement{
@@ -76,7 +76,7 @@ func TestParseProgram(t *testing.T) {
 		},
 		&ast.ExpressionStatement{
 			Expression: &ast.Integer{
-				Value: 15,
+				Value: 0,
 			},
 		},
 		&ast.BadStatement{
