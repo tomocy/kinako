@@ -84,7 +84,7 @@ func TestParseProgram(t *testing.T) {
 			Type:       "int",
 		},
 		&ast.BadStatement{
-			Message: ErrNoRParen.Error(),
+			Message: "failed to find rparen",
 		},
 		&ast.ExpressionStatement{
 			Expression: &ast.Integer{
@@ -92,7 +92,7 @@ func TestParseProgram(t *testing.T) {
 			},
 		},
 		&ast.BadStatement{
-			Message: ErrNoSemicolon.Error(),
+			Message: "failed to find semicolon",
 		},
 		&ast.BadStatement{
 			Message: "failed to find identifier of variable",

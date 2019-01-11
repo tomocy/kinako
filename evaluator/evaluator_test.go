@@ -40,7 +40,7 @@ func TestEvaluate(t *testing.T) {
 		{
 			"15; 16",
 			&object.Error{
-				Message: "failed to find semicolon. semicolon should be at the end of a statement",
+				Message: "failed to find semicolon",
 			},
 		},
 		{

@@ -11,9 +11,7 @@ import (
 )
 
 var (
-	ErrNoToken     = errors.New("failed to find desire token")
-	ErrNoSemicolon = errors.New("failed to find semicolon. semicolon should be at the end of a statement")
-	ErrNoRParen    = errors.New("failed to find rparen which is the pair of lparen")
+	ErrNoToken = errors.New("failed to find desire token")
 )
 
 type priority int
@@ -106,10 +104,9 @@ func (p *Parser) parseStatement() ast.Statement {
 		stmt = p.parseExpressionStatement()
 	}
 
-	if !p.willHave(token.Semicolon) {
-		return p.reportBadStatement(ErrNoSemicolon.Error())
+	if err := p.expectAndMoveTokenForward(token.Semicolon); err != nil {
+		p.keepBadStatement("failed to find semicolon")
 	}
-	p.moveTokenForward()
 
 	if p.hasBadStatements() {
 		return p.takeOutLastBadStatement()
@@ -176,11 +173,10 @@ func (p *Parser) parseInfixExpression(left ast.Expression) ast.Expression {
 func (p *Parser) parseGroupExpression() ast.Expression {
 	p.moveTokenForward()
 	expr := p.parseExpression(lowest)
-	if !p.willHave(token.RParen) {
-		p.keepBadStatement(ErrNoRParen.Error())
+	if err := p.expectAndMoveTokenForward(token.RParen); err != nil {
+		p.keepBadStatement("failed to find rparen")
 		return nil
 	}
-	p.moveTokenForward()
 
 	return expr
 }
