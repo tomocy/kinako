@@ -130,6 +130,13 @@ func (p *Parser) parseVariableDeclaration() *ast.VariableDeclaration {
 	}
 	stmt.Type = p.currentToken.Literal
 
+	if err := p.expectAndMoveTokenForward(token.Assign); err != nil {
+		return stmt
+	}
+
+	p.moveTokenForward()
+	stmt.Expression = p.parseExpression(lowest)
+
 	return stmt
 }
 

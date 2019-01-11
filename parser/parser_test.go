@@ -14,6 +14,7 @@ func TestParseProgram(t *testing.T) {
 	7 + 8 - 9 * 10 / 11;
 	(12 + 13) / 14;
 	var x int;
+	var x int = 15;
 	(0 + 0;
 	0; 0
 	var;
@@ -82,6 +83,13 @@ func TestParseProgram(t *testing.T) {
 		&ast.VariableDeclaration{
 			Identifier: "x",
 			Type:       "int",
+		},
+		&ast.VariableDeclaration{
+			Identifier: "x",
+			Type:       "int",
+			Expression: &ast.Integer{
+				Value: 15,
+			},
 		},
 		&ast.BadStatement{
 			Message: "failed to find rparen",

@@ -33,6 +33,7 @@ func (s ExpressionStatement) statement() {
 type VariableDeclaration struct {
 	Identifier string
 	Type       string
+	Expression Expression
 }
 
 func (s VariableDeclaration) node() {
