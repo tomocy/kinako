@@ -16,6 +16,8 @@ func TestParseProgram(t *testing.T) {
 	var x int;
 	(0 + 0;
 	0; 0
+	var;
+	var x;
 	`
 	expecteds := []ast.Statement{
 		&ast.ExpressionStatement{
@@ -91,6 +93,12 @@ func TestParseProgram(t *testing.T) {
 		},
 		&ast.BadStatement{
 			Message: ErrNoSemicolon.Error(),
+		},
+		&ast.BadStatement{
+			Message: "failed to find identifier of variable",
+		},
+		&ast.BadStatement{
+			Message: "failed to find type name of variable",
 		},
 	}
 	parser := New(lexer.New(input))

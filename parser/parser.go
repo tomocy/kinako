@@ -11,6 +11,7 @@ import (
 )
 
 var (
+	ErrNoToken     = errors.New("failed to find desire token")
 	ErrNoSemicolon = errors.New("failed to find semicolon. semicolon should be at the end of a statement")
 	ErrNoRParen    = errors.New("failed to find rparen which is the pair of lparen")
 )
@@ -118,20 +119,18 @@ func (p *Parser) parseStatement() ast.Statement {
 }
 
 func (p *Parser) parseVariableDeclaration() *ast.VariableDeclaration {
-	if !p.willHave(token.Ident) {
-		p.keepBadStatement("failed to find identifier of variable")
+	if err := p.expectAndMoveTokenForward(token.Ident); err != nil {
+		p.keepBadStatement(fmt.Sprintf("failed to find identifier of variable"))
 		return nil
 	}
-	p.moveTokenForward()
-
 	stmt := &ast.VariableDeclaration{
 		Identifier: p.currentToken.Literal,
 	}
-	if !p.willHave(token.Ident) {
-		p.keepBadStatement("failed to find type name of variable")
-	}
-	p.moveTokenForward()
 
+	if err := p.expectAndMoveTokenForward(token.Ident); err != nil {
+		p.keepBadStatement(fmt.Sprintf("failed to find type name of variable"))
+		return nil
+	}
 	stmt.Type = p.currentToken.Literal
 
 	return stmt
@@ -224,6 +223,15 @@ func (p *Parser) reportBadStatement(msg string) *ast.BadStatement {
 func (p *Parser) moveFirstTwoTokenForward() {
 	p.moveTokenForward()
 	p.moveTokenForward()
+}
+
+func (p *Parser) expectAndMoveTokenForward(t token.Type) error {
+	if !p.willHave(t) {
+		return ErrNoToken
+	}
+	p.moveTokenForward()
+
+	return nil
 }
 
 func (p *Parser) moveTokenForward() {
