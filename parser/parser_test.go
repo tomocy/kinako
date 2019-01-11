@@ -15,6 +15,7 @@ func TestParseProgram(t *testing.T) {
 	(12 + 13) / 14;
 	var x int;
 	var x int = 15;
+	x;
 	(0 + 0;
 	0; 0
 	var;
@@ -91,6 +92,11 @@ func TestParseProgram(t *testing.T) {
 				Value: 15,
 			},
 		},
+		&ast.ExpressionStatement{
+			Expression: &ast.Identifier{
+				Name: "x",
+			},
+		},
 		&ast.BadStatement{
 			Message: "failed to find rparen",
 		},
@@ -139,6 +145,8 @@ func testParseExpression(t *testing.T, actual, expected ast.Expression) {
 		testParsePrefixExpression(t, actual, expected.(*ast.PrefixExpression))
 	case *ast.InfixExpression:
 		testParseInfixExpression(t, actual, expected.(*ast.InfixExpression))
+	case *ast.Identifier:
+		testParseIdentifier(t, actual, expected.(*ast.Identifier))
 	case *ast.Integer:
 		testParseInteger(t, actual, expected.(*ast.Integer))
 	default:
@@ -159,6 +167,12 @@ func testParseInfixExpression(t *testing.T, actual, expected *ast.InfixExpressio
 		t.Errorf("unexpected infix operator: got %s, but expected %s\n", actual.Operator, expected.Operator)
 	}
 	testParseExpression(t, actual.RExpression, expected.RExpression)
+}
+
+func testParseIdentifier(t *testing.T, actual, expected *ast.Identifier) {
+	if actual.Name != expected.Name {
+		t.Errorf("unexpected name: got %s, but expected %s\n", actual.Name, expected.Name)
+	}
 }
 
 func testParseInteger(t *testing.T, actual, expected *ast.Integer) {

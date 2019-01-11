@@ -62,9 +62,10 @@ func New(l *lexer.Lexer) *Parser {
 
 func (p *Parser) registerPrefixParsers() {
 	p.prefixParsers = map[token.Type]prefixParser{
-		token.Minus:   p.parsePrefixExpression,
-		token.LParen:  p.parseGroupExpression,
-		token.Integer: p.parseInteger,
+		token.Minus:      p.parsePrefixExpression,
+		token.LParen:     p.parseGroupExpression,
+		token.Identifier: p.parseIdentifier,
+		token.Integer:    p.parseInteger,
 	}
 }
 
@@ -186,6 +187,12 @@ func (p *Parser) parseGroupExpression() ast.Expression {
 	}
 
 	return expr
+}
+
+func (p *Parser) parseIdentifier() ast.Expression {
+	return &ast.Identifier{
+		Name: p.currentToken.Literal,
+	}
 }
 
 func (p *Parser) parseInteger() ast.Expression {
