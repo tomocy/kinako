@@ -85,7 +85,7 @@ func TestParseProgram(t *testing.T) {
 			},
 		},
 		&ast.BadStatement{
-			Message: "failed to find semicolon. semicolon should be at the end of a statement",
+			Message: ErrNoSemicolon.Error(),
 		},
 	}
 	parser := New(lexer.New(input))
