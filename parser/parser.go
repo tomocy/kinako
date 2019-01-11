@@ -92,7 +92,7 @@ func (p *Parser) parseStatements() []ast.Statement {
 func (p *Parser) parseStatement() ast.Statement {
 	stmt := p.parseExpressionStatement()
 	if !p.willHaveSemicolon() {
-		return p.parseBadStatement("failed to find semicolon. semicolon should be at the end of a statement")
+		return p.reportBadStatement("failed to find semicolon. semicolon should be at the end of a statement")
 	}
 	p.moveTokenForward()
 
@@ -159,7 +159,7 @@ func (p *Parser) parseInteger() ast.Expression {
 	}
 }
 
-func (p *Parser) parseBadStatement(msg string) *ast.BadStatement {
+func (p *Parser) reportBadStatement(msg string) *ast.BadStatement {
 	return &ast.BadStatement{
 		Message: msg,
 	}
