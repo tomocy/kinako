@@ -11,7 +11,7 @@ import (
 )
 
 var (
-	ErrNoToken = errors.New("failed to find desire token")
+	ErrNoToken = errors.New("failed to find desired token")
 )
 
 type priority int
