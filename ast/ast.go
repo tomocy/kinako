@@ -30,6 +30,17 @@ func (s ExpressionStatement) node() {
 func (s ExpressionStatement) statement() {
 }
 
+type VariableDeclaration struct {
+	Identifier string
+	Type       string
+}
+
+func (s VariableDeclaration) node() {
+}
+
+func (s VariableDeclaration) statement() {
+}
+
 type BadStatement struct {
 	Message string
 }

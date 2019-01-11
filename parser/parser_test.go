@@ -13,6 +13,7 @@ func TestParseProgram(t *testing.T) {
 	5; -6;
 	7 + 8 - 9 * 10 / 11;
 	(12 + 13) / 14;
+	var x int;
 	(0 + 0;
 	0; 0
 	`
@@ -76,6 +77,10 @@ func TestParseProgram(t *testing.T) {
 				},
 			},
 		},
+		&ast.VariableDeclaration{
+			Identifier: "x",
+			Type:       "int",
+		},
 		&ast.BadStatement{
 			Message: ErrNoRParen.Error(),
 		},
@@ -99,6 +104,8 @@ func testParseStatement(t *testing.T, actual, expected ast.Statement) {
 	switch actual := actual.(type) {
 	case *ast.ExpressionStatement:
 		testParseExpressionStatement(t, actual, expected.(*ast.ExpressionStatement))
+	case *ast.VariableDeclaration:
+		testParseVariableDeclaration(t, actual, expected.(*ast.VariableDeclaration))
 	case *ast.BadStatement:
 		testParseBadStatement(t, actual, expected.(*ast.BadStatement))
 	default:
@@ -141,6 +148,15 @@ func testParseInfixExpression(t *testing.T, actual, expected *ast.InfixExpressio
 func testParseInteger(t *testing.T, actual, expected *ast.Integer) {
 	if actual.Value != expected.Value {
 		t.Errorf("unexpected value: got %d, but expected %d\n", actual.Value, expected.Value)
+	}
+}
+
+func testParseVariableDeclaration(t *testing.T, actual, expected *ast.VariableDeclaration) {
+	if actual.Identifier != expected.Identifier {
+		t.Errorf("unexpected identifier: got %s, but expected %s\n", actual.Identifier, expected.Identifier)
+	}
+	if actual.Type != expected.Type {
+		t.Errorf("unexpected type: got %s, but expected %s\n", actual.Type, expected.Type)
 	}
 }
 

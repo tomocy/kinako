@@ -97,7 +97,14 @@ func (p *Parser) parseStatements() []ast.Statement {
 }
 
 func (p *Parser) parseStatement() ast.Statement {
-	stmt := p.parseExpressionStatement()
+	var stmt ast.Statement
+	switch p.currentToken.Type {
+	case token.Var:
+		stmt = p.parseVariableDeclaration()
+	default:
+		stmt = p.parseExpressionStatement()
+	}
+
 	if !p.willHaveSemicolon() {
 		return p.reportBadStatement(ErrNoSemicolon.Error())
 	}
@@ -106,6 +113,26 @@ func (p *Parser) parseStatement() ast.Statement {
 	if p.hasBadStatements() {
 		return p.takeOutLastBadStatement()
 	}
+
+	return stmt
+}
+
+func (p *Parser) parseVariableDeclaration() *ast.VariableDeclaration {
+	if !p.willHave(token.Ident) {
+		p.keepBadStatement("failed to find identifier of variable")
+		return nil
+	}
+	p.moveTokenForward()
+
+	stmt := &ast.VariableDeclaration{
+		Identifier: p.currentToken.Literal,
+	}
+	if !p.willHave(token.Ident) {
+		p.keepBadStatement("failed to find type name of variable")
+	}
+	p.moveTokenForward()
+
+	stmt.Type = p.currentToken.Literal
 
 	return stmt
 }
