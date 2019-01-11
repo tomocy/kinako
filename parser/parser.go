@@ -39,6 +39,7 @@ type Parser struct {
 	lexer         *lexer.Lexer
 	prefixParsers map[token.Type]prefixParser
 	infixParsers  map[token.Type]infixParser
+	errors        []error
 	currentToken  token.Token
 	readingToken  token.Token
 }
@@ -92,9 +93,13 @@ func (p *Parser) parseStatements() []ast.Statement {
 func (p *Parser) parseStatement() ast.Statement {
 	stmt := p.parseExpressionStatement()
 	if !p.willHaveSemicolon() {
-		return p.reportBadStatement("failed to find semicolon. semicolon should be at the end of a statement")
+		p.keepBadStatement("failed to find semicolon. semicolon should be at the end of a statement")
 	}
 	p.moveTokenForward()
+
+	if p.hasBadStatement() {
+		return p.takeOutFirstBadStatement()
+	}
 
 	return stmt
 }
@@ -159,10 +164,30 @@ func (p *Parser) parseInteger() ast.Expression {
 	}
 }
 
-func (p *Parser) reportBadStatement(msg string) *ast.BadStatement {
-	return &ast.BadStatement{
-		Message: msg,
+func (p *Parser) hasBadStatement() bool {
+	for _, err := range p.errors {
+		if _, ok := err.(*ast.BadStatement); ok {
+			return true
+		}
 	}
+
+	return false
+}
+
+func (p *Parser) takeOutFirstBadStatement() *ast.BadStatement {
+	for _, err := range p.errors {
+		if stmt, ok := err.(*ast.BadStatement); ok {
+			return stmt
+		}
+	}
+
+	return nil
+}
+
+func (p *Parser) keepBadStatement(msg string) {
+	p.errors = append(p.errors, &ast.BadStatement{
+		Message: msg,
+	})
 }
 
 func (p *Parser) moveFirstTwoTokenForward() {
