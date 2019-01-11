@@ -10,7 +10,10 @@ import (
 	"github.com/tomocy/kinako/token"
 )
 
-var ErrNoSemicolon = errors.New("failed to find semicolon. semicolon should be at the end of a statement")
+var (
+	ErrNoSemicolon = errors.New("failed to find semicolon. semicolon should be at the end of a statement")
+	ErrNoRParen    = errors.New("failed to find rparen which is the pair of lparen")
+)
 
 type priority int
 
@@ -100,6 +103,10 @@ func (p *Parser) parseStatement() ast.Statement {
 	}
 	p.moveTokenForward()
 
+	if p.hasBadStatements() {
+		return p.takeOutLastBadStatement()
+	}
+
 	return stmt
 }
 
@@ -144,7 +151,8 @@ func (p *Parser) parseGroupExpression() ast.Expression {
 	p.moveTokenForward()
 	expr := p.parseExpression(lowest)
 	if !p.willHave(token.RParen) {
-		panic("failed to find rparen which is the pair of lparen")
+		p.keepBadStatement(ErrNoRParen.Error())
+		return nil
 	}
 	p.moveTokenForward()
 
@@ -161,6 +169,33 @@ func (p *Parser) parseInteger() ast.Expression {
 		Token: p.currentToken,
 		Value: value,
 	}
+}
+
+func (p *Parser) hasBadStatements() bool {
+	for i := len(p.errors) - 1; 0 <= i; i-- {
+		if _, ok := p.errors[i].(*ast.BadStatement); ok {
+			return true
+		}
+	}
+
+	return false
+}
+
+func (p *Parser) takeOutLastBadStatement() *ast.BadStatement {
+	for i := len(p.errors) - 1; 0 <= i; i-- {
+		if stmt, ok := p.errors[i].(*ast.BadStatement); ok {
+			p.errors = append(p.errors[:i], p.errors[i+1:]...)
+			return stmt
+		}
+	}
+
+	return nil
+}
+
+func (p *Parser) keepBadStatement(msg string) {
+	p.errors = append(p.errors, &ast.BadStatement{
+		Message: msg,
+	})
 }
 
 func (p *Parser) reportBadStatement(msg string) *ast.BadStatement {

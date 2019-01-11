@@ -1,6 +1,7 @@
 package parser
 
 import (
+	"log"
 	"testing"
 
 	"github.com/tomocy/kinako/ast"
@@ -12,6 +13,7 @@ func TestParseProgram(t *testing.T) {
 	5; -6;
 	7 + 8 - 9 * 10 / 11;
 	(12 + 13) / 14;
+	(0 + 0;
 	0; 0
 	`
 	expecteds := []ast.Statement{
@@ -73,6 +75,9 @@ func TestParseProgram(t *testing.T) {
 					Value: 14,
 				},
 			},
+		},
+		&ast.BadStatement{
+			Message: ErrNoRParen.Error(),
 		},
 		&ast.ExpressionStatement{
 			Expression: &ast.Integer{
@@ -140,6 +145,8 @@ func testParseInteger(t *testing.T, actual, expected *ast.Integer) {
 }
 
 func testParseBadStatement(t *testing.T, actual, expected *ast.BadStatement) {
+	log.Printf("actual: %q\n", actual)
+	log.Printf("expected: %q\n", expected)
 	if actual.Message != expected.Message {
 		t.Errorf("unexpected message: got %s, but expected %s\n", actual.Message, expected.Message)
 	}
