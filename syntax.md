@@ -1,6 +1,6 @@
 Program: Statements
 Statements: Statement | Statement Statements | ε
-Statement: ExpressionStatement ";"
+Statement: ExpressionStatement ";" | VariableDeclaration ";"
 ExpressionStatement: Expression
 Expression: PrefixExpression | InfixExpression | GroupExpression | UnsignedInteger
 PrefixExpression: SignedInteger
