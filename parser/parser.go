@@ -87,7 +87,7 @@ func (p *Parser) ParseProgram() *ast.Program {
 
 func (p *Parser) parseStatements() []ast.Statement {
 	stmts := make([]ast.Statement, 0)
-	for !p.hasEOF() {
+	for !p.has(token.EOF) {
 		if stmt := p.parseStatement(); stmt != nil {
 			stmts = append(stmts, stmt)
 		}
@@ -106,7 +106,7 @@ func (p *Parser) parseStatement() ast.Statement {
 		stmt = p.parseExpressionStatement()
 	}
 
-	if !p.willHaveSemicolon() {
+	if !p.willHave(token.Semicolon) {
 		return p.reportBadStatement(ErrNoSemicolon.Error())
 	}
 	p.moveTokenForward()
@@ -144,7 +144,7 @@ func (p *Parser) parseExpressionStatement() *ast.ExpressionStatement {
 
 func (p *Parser) parseExpression(prio priority) ast.Expression {
 	expr := p.prefixParsers[p.currentToken.Type]()
-	for !p.willHaveSemicolon() && p.checkReadingTokenPriority().isHigherThan(prio) {
+	for !p.willHave(token.Semicolon) && p.checkReadingTokenPriority().isHigherThan(prio) {
 		p.moveTokenForward()
 		expr = p.infixParsers[p.currentToken.Type](expr)
 	}
@@ -253,14 +253,6 @@ func checkTokenPriority(t token.Type) priority {
 	}
 
 	return lowest
-}
-
-func (p Parser) hasEOF() bool {
-	return p.has(token.EOF)
-}
-
-func (p Parser) willHaveSemicolon() bool {
-	return p.willHave(token.Semicolon)
 }
 
 func (p Parser) has(t token.Type) bool {
