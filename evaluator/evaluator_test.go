@@ -44,7 +44,7 @@ func TestEvaluate(t *testing.T) {
 			},
 		},
 		{
-			"var x int = 10;",
+			"var x int = 10;", // TODO: use 16 as test value
 			&object.Integer{
 				Value: 10,
 			},

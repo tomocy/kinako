@@ -15,11 +15,13 @@ var zeroValues = map[string]object.Object{
 
 type Evaluator struct {
 	node ast.Node
+	env  Environment
 }
 
 func New(node ast.Node) *Evaluator {
 	return &Evaluator{
 		node: node,
+		env:  make(Environment),
 	}
 }
 
@@ -62,11 +64,16 @@ func (e *Evaluator) evaluateExpressionStatement(node *ast.ExpressionStatement) o
 }
 
 func (e *Evaluator) evaluateVariableDeclaration(node *ast.VariableDeclaration) object.Object {
+	var obj object.Object
 	if node.Expression == nil {
-		return zeroValues[node.Type.Name]
+		obj = zeroValues[node.Type.Name]
+	} else {
+		obj = e.evaluate(node.Expression)
 	}
 
-	return e.evaluate(node.Expression)
+	e.env[node.Identifier.Name] = obj
+
+	return obj
 }
 
 func (e *Evaluator) evaluateBadStatement(node *ast.BadStatement) object.Object {
