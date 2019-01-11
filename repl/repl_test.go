@@ -16,8 +16,8 @@ func TestPrintResult(t *testing.T) {
 		{"(12 + 13) / 14;", "1\n"},
 		{"var x int = 15;", "15\n"},
 		{"var x int = 16; x;", "16\n"},
-		{"15; 16", "failed to find semicolon\n"},
-		{"5 / 0;", "divided by zero\n"},
+		{"0; 0", "failed to find semicolon\n"},
+		{"0 / 0;", "divided by zero\n"},
 	}
 	for _, test := range tests {
 		w := new(bytes.Buffer)
@@ -27,7 +27,7 @@ func TestPrintResult(t *testing.T) {
 		mock.printResult(test.input)
 		actual := w.String()
 		if actual != test.expected {
-			t.Errorf("unexpected result: got %s, but expected %s\n", actual, test.expected) // TODO: use %q as formatter
+			t.Errorf("unexpected result: got %q, but expected %q\n", actual, test.expected)
 		}
 	}
 }
