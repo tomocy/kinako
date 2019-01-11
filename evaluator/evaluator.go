@@ -7,6 +7,12 @@ import (
 	"github.com/tomocy/kinako/object"
 )
 
+var zeroValues = map[string]object.Object{
+	"int": &object.Integer{
+		Value: 0,
+	},
+}
+
 type Evaluator struct {
 	node ast.Node
 }
@@ -56,6 +62,10 @@ func (e *Evaluator) evaluateExpressionStatement(node *ast.ExpressionStatement) o
 }
 
 func (e *Evaluator) evaluateVariableDeclaration(node *ast.VariableDeclaration) object.Object {
+	if node.Expression == nil {
+		return zeroValues[node.Type.Name]
+	}
+
 	return e.evaluate(node.Expression)
 }
 

@@ -38,6 +38,12 @@ func TestEvaluate(t *testing.T) {
 			},
 		},
 		{
+			"var x int;",
+			&object.Integer{
+				Value: 0,
+			},
+		},
+		{
 			"var x int = 10;",
 			&object.Integer{
 				Value: 10,
