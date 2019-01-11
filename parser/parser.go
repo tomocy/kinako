@@ -202,7 +202,6 @@ func (p *Parser) parseInteger() ast.Expression {
 	}
 
 	return &ast.Integer{
-		Token: p.currentToken,
 		Value: value,
 	}
 }

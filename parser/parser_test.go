@@ -192,7 +192,7 @@ func testParseVariableDeclaration(t *testing.T, actual, expected *ast.VariableDe
 
 func testParseBadStatement(t *testing.T, actual, expected *ast.BadStatement) {
 	log.Printf("actual: %q\n", actual)
-	log.Printf("expected: %q\n", expected)
+	log.Printf("expected: %q\n", expected) // TODO: remove unused degug message
 	if actual.Message != expected.Message {
 		t.Errorf("unexpected message: got %s, but expected %s\n", actual.Message, expected.Message)
 	}

@@ -116,9 +116,7 @@ func (e Identifier) node() {
 func (e Identifier) expression() {
 }
 
-// TODO: remove Token from Integer
 type Integer struct {
-	Token token.Token
 	Value int64
 }
 
