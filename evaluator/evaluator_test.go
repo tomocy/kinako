@@ -43,6 +43,12 @@ func TestEvaluate(t *testing.T) {
 				Message: "failed to find semicolon. semicolon should be at the end of a statement",
 			},
 		},
+		{
+			"5 / 0;",
+			&object.Error{
+				Message: "divided by zero",
+			},
+		},
 	}
 	for _, test := range tests {
 		parser := parser.New(lexer.New(test.input))

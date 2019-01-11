@@ -113,7 +113,9 @@ func (e *Evaluator) evaluateMultiplication(left, right object.Object) object.Obj
 func (e *Evaluator) evaluateDivision(left, right object.Object) object.Object {
 	rightVal := right.(*object.Integer).Value
 	if rightVal == 0 {
-		panic("divided by zero")
+		return &object.Error{
+			Message: "divided by zero",
+		}
 	}
 
 	return &object.Integer{
