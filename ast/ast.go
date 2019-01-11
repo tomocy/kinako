@@ -40,10 +40,6 @@ func (s BadStatement) node() {
 func (s BadStatement) statement() {
 }
 
-func (s BadStatement) Error() string {
-	return s.Message
-}
-
 type Expression interface {
 	Node
 	expression()

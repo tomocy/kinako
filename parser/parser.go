@@ -45,7 +45,7 @@ type Parser struct {
 	lexer         *lexer.Lexer
 	prefixParsers map[token.Type]prefixParser
 	infixParsers  map[token.Type]infixParser
-	errors        []error
+	badStatements []*ast.BadStatement
 	currentToken  token.Token
 	readingToken  token.Token
 }
@@ -172,28 +172,18 @@ func (p *Parser) parseInteger() ast.Expression {
 }
 
 func (p *Parser) hasBadStatements() bool {
-	for i := len(p.errors) - 1; 0 <= i; i-- {
-		if _, ok := p.errors[i].(*ast.BadStatement); ok {
-			return true
-		}
-	}
-
-	return false
+	return 0 < len(p.badStatements)
 }
 
 func (p *Parser) takeOutLastBadStatement() *ast.BadStatement {
-	for i := len(p.errors) - 1; 0 <= i; i-- {
-		if stmt, ok := p.errors[i].(*ast.BadStatement); ok {
-			p.errors = append(p.errors[:i], p.errors[i+1:]...)
-			return stmt
-		}
-	}
-
-	return nil
+	i := len(p.badStatements) - 1
+	stmt := p.badStatements[i]
+	p.badStatements = p.badStatements[:i]
+	return stmt
 }
 
 func (p *Parser) keepBadStatement(msg string) {
-	p.errors = append(p.errors, &ast.BadStatement{
+	p.badStatements = append(p.badStatements, &ast.BadStatement{
 		Message: msg,
 	})
 }
