@@ -22,12 +22,14 @@ func TestPrintResult(t *testing.T) {
 		{"0 / 0;", "divided by zero\n"},
 	}
 	for _, test := range tests {
-		w := new(bytes.Buffer)
-		mock := New(nil, w)
-		mock.printResult(test.input)
-		actual := w.String()
-		if actual != test.expected {
-			t.Errorf("unexpected result: got %q, but expected %q\n", actual, test.expected)
-		}
+		t.Run(test.input, func(t *testing.T) {
+			w := new(bytes.Buffer)
+			mock := New(nil, w)
+			mock.printResult(test.input)
+			actual := w.String()
+			if actual != test.expected {
+				t.Errorf("unexpected result: got %q, but expected %q\n", actual, test.expected)
+			}
+		})
 	}
 }
