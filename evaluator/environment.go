@@ -9,5 +9,8 @@ func NewEnvironment() Environment {
 		"true": &object.Boolean{
 			Value: true,
 		},
+		"false": &object.Boolean{
+			Value: false,
+		},
 	}
 }
