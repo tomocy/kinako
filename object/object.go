@@ -2,7 +2,6 @@ package object
 
 import (
 	"fmt"
-	"strconv"
 )
 
 type Object interface {
@@ -13,11 +12,11 @@ type Integer struct {
 	Value int64
 }
 
-func (i Integer) object() {
+func (o Integer) object() {
 }
 
-func (i Integer) String() string {
-	return strconv.FormatInt(i.Value, 10)
+func (o Integer) String() string {
+	return fmt.Sprintf("%d", o.Value)
 }
 
 type Boolean struct {
@@ -35,9 +34,9 @@ type Error struct {
 	Message string
 }
 
-func (e Error) object() {
+func (o Error) object() {
 }
 
-func (e Error) String() string {
-	return e.Message
+func (o Error) String() string {
+	return o.Message
 }
