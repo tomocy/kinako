@@ -56,6 +56,12 @@ func TestEvaluate(t *testing.T) {
 			},
 		},
 		{
+			"true;",
+			&object.Boolean{
+				Value: true,
+			},
+		},
+		{
 			"0; 0",
 			&object.Error{
 				Message: "failed to find semicolon",
@@ -80,7 +86,10 @@ func TestEvaluate(t *testing.T) {
 		obj := New().Evaluate(program)
 		switch obj := obj.(type) {
 		case *object.Integer:
+			// TODO: fix typo: test.expect to test.expected
 			testEvaluateIntegerObject(t, obj, test.expect.(*object.Integer))
+		case *object.Boolean:
+			testEvaluateBoolean(t, obj, test.expect.(*object.Boolean))
 		case *object.Error:
 			testEvaluateError(t, obj, test.expect.(*object.Error))
 		default:
@@ -89,9 +98,16 @@ func TestEvaluate(t *testing.T) {
 	}
 }
 
+// TODO: rename: testEvaluateIntegerObject to testEvaluateInteger
 func testEvaluateIntegerObject(t *testing.T, actual, expected *object.Integer) {
 	if actual.Value != expected.Value {
 		t.Errorf("unexpected value: got %d, but expected %d\n", actual.Value, expected.Value)
+	}
+}
+
+func testEvaluateBoolean(t *testing.T, actual, expected *object.Boolean) {
+	if actual.Value != expected.Value {
+		t.Errorf("unexpected value: got %t, but expected %t\n", actual.Value, expected.Value)
 	}
 }
 

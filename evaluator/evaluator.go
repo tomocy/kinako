@@ -19,7 +19,7 @@ type Evaluator struct {
 
 func New() *Evaluator {
 	return &Evaluator{
-		env: make(Environment),
+		env: NewEnvironment(),
 	}
 }
 
