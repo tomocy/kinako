@@ -15,6 +15,7 @@ func TestParseProgram(t *testing.T) {
 	var x int;
 	var x int = 15;
 	x;
+	true; false;
 	(0 + 0;
 	0; 0
 	var;
@@ -102,6 +103,16 @@ func TestParseProgram(t *testing.T) {
 		&ast.ExpressionStatement{
 			Expression: &ast.Identifier{
 				Name: "x",
+			},
+		},
+		&ast.ExpressionStatement{
+			Expression: &ast.Identifier{
+				Name: "true",
+			},
+		},
+		&ast.ExpressionStatement{
+			Expression: &ast.Identifier{
+				Name: "false",
 			},
 		},
 		&ast.BadStatement{
