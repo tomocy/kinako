@@ -67,7 +67,11 @@ func (e *Evaluator) evaluateVariableDeclaration(node *ast.VariableDeclaration) o
 		obj = e.Evaluate(node.Expression)
 	}
 
-	e.env[node.Identifier.Name] = obj
+	if err := e.env.Set(node.Identifier.Name, obj); err != nil {
+		return &object.Error{
+			Message: err.Error(),
+		}
+	}
 
 	return obj
 }
