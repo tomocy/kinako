@@ -87,19 +87,21 @@ func TestEvaluate(t *testing.T) {
 		},
 	}
 	for _, test := range tests {
-		parser := parser.New(lexer.New(test.input))
-		program := parser.ParseProgram()
-		obj := New().Evaluate(program)
-		switch obj := obj.(type) {
-		case *object.Integer:
-			testEvaluateInteger(t, obj, test.expected.(*object.Integer))
-		case *object.Boolean:
-			testEvaluateBoolean(t, obj, test.expected.(*object.Boolean))
-		case *object.Error:
-			testEvaluateError(t, obj, test.expected.(*object.Error))
-		default:
-			t.Fatalf("failed to assert type of object: %T, did you forget to add the type in switch?\n", obj)
-		}
+		t.Run(test.input, func(t *testing.T) {
+			parser := parser.New(lexer.New(test.input))
+			program := parser.ParseProgram()
+			obj := New().Evaluate(program)
+			switch obj := obj.(type) {
+			case *object.Integer:
+				testEvaluateInteger(t, obj, test.expected.(*object.Integer))
+			case *object.Boolean:
+				testEvaluateBoolean(t, obj, test.expected.(*object.Boolean))
+			case *object.Error:
+				testEvaluateError(t, obj, test.expected.(*object.Error))
+			default:
+				t.Fatalf("failed to assert type of object: %T, did you forget to add the type in switch?\n", obj)
+			}
+		})
 	}
 }
 
