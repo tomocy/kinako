@@ -86,7 +86,7 @@ func TestEvaluate(t *testing.T) {
 		obj := New().Evaluate(program)
 		switch obj := obj.(type) {
 		case *object.Integer:
-			testEvaluateIntegerObject(t, obj, test.expected.(*object.Integer))
+			testEvaluateInteger(t, obj, test.expected.(*object.Integer))
 		case *object.Boolean:
 			testEvaluateBoolean(t, obj, test.expected.(*object.Boolean))
 		case *object.Error:
@@ -97,8 +97,7 @@ func TestEvaluate(t *testing.T) {
 	}
 }
 
-// TODO: rename: testEvaluateIntegerObject to testEvaluateInteger
-func testEvaluateIntegerObject(t *testing.T, actual, expected *object.Integer) {
+func testEvaluateInteger(t *testing.T, actual, expected *object.Integer) {
 	if actual.Value != expected.Value {
 		t.Errorf("unexpected value: got %d, but expected %d\n", actual.Value, expected.Value)
 	}
