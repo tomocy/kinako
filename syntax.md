@@ -3,8 +3,7 @@ Statements: Statement | Statement Statements | ε
 Statement: ExpressionStatement ";" | VariableDeclaration ";"  
 ExpressionStatement: Expression  
 Expression: PrefixExpression | InfixExpression | GroupExpression | Identifier | UnsignedInteger  
-PrefixExpression: SignedInteger  
-SignedInteger: "-" UnsignedInteger  
+PrefixExpression: "-" UnsignedInteger  | "!" Boolean  
 InfixExpression: Expression InfixOperator Expression  
 InfixOperator: "+" | "-" | "*" | "/"  
 GroupExpression: "(" Expression ")"  
@@ -15,3 +14,4 @@ VariableDeclaration: "var" Identifier Type "=" Expression
 Identifier: Letter  
 Type: Identifier  
 Letter: /* a to z or A to Z */  
+Boolean: "true" | "false"
