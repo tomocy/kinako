@@ -87,6 +87,8 @@ func (e *Evaluator) evaluatePrefixExpression(node *ast.PrefixExpression) object.
 	switch node.Operator {
 	case ast.Negative:
 		return e.evaluateNegativeInteger(obj.(*object.Integer))
+	case ast.Not:
+		return e.evaluateNOT(obj.(*object.Boolean))
 	default:
 		panic(fmt.Sprintf("failed to assert prefix operator type because of developer. contact him or her to inform the missing type is %s", node.Operator))
 	}
@@ -95,6 +97,12 @@ func (e *Evaluator) evaluatePrefixExpression(node *ast.PrefixExpression) object.
 func (e *Evaluator) evaluateNegativeInteger(obj *object.Integer) *object.Integer {
 	return &object.Integer{
 		Value: -1 * obj.Value,
+	}
+}
+
+func (e *Evaluator) evaluateNOT(obj *object.Boolean) *object.Boolean {
+	return &object.Boolean{
+		Value: !obj.Value,
 	}
 }
 

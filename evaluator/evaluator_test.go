@@ -68,6 +68,12 @@ func TestEvaluate(t *testing.T) {
 			},
 		},
 		{
+			"!false;",
+			&object.Boolean{
+				Value: true,
+			},
+		},
+		{
 			"0; 0",
 			&object.Error{
 				Message: "failed to find semicolon",
