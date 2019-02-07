@@ -18,6 +18,7 @@ func TestPrintResult(t *testing.T) {
 		{"var x int = 16; x;", "16\n"},
 		{"true;", "true\n"},
 		{"false;", "false\n"},
+		{"!true;", "false\n"},
 		{"0; 0", "failed to find semicolon\n"},
 		{"0 / 0;", "divided by zero\n"},
 	}
