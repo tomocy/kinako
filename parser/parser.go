@@ -63,6 +63,7 @@ func New(l *lexer.Lexer) *Parser {
 func (p *Parser) registerPrefixParsers() {
 	p.prefixParsers = map[token.Type]prefixParser{
 		token.Minus:      p.parsePrefixExpression,
+		token.Not:        p.parsePrefixExpression,
 		token.LParen:     p.parseGroupExpression,
 		token.Identifier: p.parseIdentifier,
 		token.Integer:    p.parseInteger,

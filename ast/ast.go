@@ -66,10 +66,12 @@ type PrefixOperator string
 
 const (
 	Negative PrefixOperator = "-"
+	Not                     = "!"
 )
 
 var PrefixOperators = map[token.Type]PrefixOperator{
 	token.Minus: Negative,
+	token.Not:   Not,
 }
 
 func (e PrefixExpression) node() {
