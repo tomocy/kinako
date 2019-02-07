@@ -11,6 +11,7 @@ func TestReadNextToken(t *testing.T) {
 	1 + 2 - 3 * 4 / 5
 	((6 + 7) * (8 - 9)) / 10
 	var x int = 10
+	!true
 	;
 	`
 	expects := []token.Token{
@@ -21,6 +22,7 @@ func TestReadNextToken(t *testing.T) {
 		{token.LParen, "("}, {token.Integer, "8"}, {token.Minus, "-"}, {token.Integer, "9"}, {token.RParen, ")"},
 		{token.RParen, ")"}, {token.Slash, "/"}, {token.Integer, "10"},
 		{token.Var, "var"}, {token.Identifier, "x"}, {token.Identifier, "int"}, {token.Assign, "="}, {token.Integer, "10"},
+		{token.Not, "!"}, {token.Identifier, "true"},
 		{token.Semicolon, ";"},
 		{token.EOF, ""},
 	}

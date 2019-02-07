@@ -17,6 +17,8 @@ const (
 	Asterisk = "Asterisk"
 	Slash    = "Slash"
 
+	Not = "Not"
+
 	Assign = "Assign"
 
 	Semicolon = ";"
@@ -35,6 +37,7 @@ var types = map[string]Type{
 	"-": Minus,
 	"*": Asterisk,
 	"/": Slash,
+	"!": Not,
 	"=": Assign,
 	";": Semicolon,
 	"(": LParen,
