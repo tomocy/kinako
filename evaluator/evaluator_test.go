@@ -44,6 +44,12 @@ func TestEvaluate(t *testing.T) {
 			},
 		},
 		{
+			"var x bool;",
+			&object.Boolean{
+				Value: false,
+			},
+		},
+		{
 			"var x int = 16;",
 			&object.Integer{
 				Value: 16,

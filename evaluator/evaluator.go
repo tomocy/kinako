@@ -11,6 +11,9 @@ var zeroValues = map[string]object.Object{
 	"int": &object.Integer{
 		Value: 0,
 	},
+	"bool": &object.Boolean{
+		Value: false,
+	},
 }
 
 type Evaluator struct {
